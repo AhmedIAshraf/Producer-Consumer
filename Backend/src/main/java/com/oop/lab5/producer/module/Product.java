@@ -1,9 +1,20 @@
 package com.oop.lab5.producer.module;
 
+import com.oop.lab5.producer.service.RandomColorGenerator;
+
+import java.awt.*;
+
 public class Product {
     private long id;
-    private String color; //will be generated randomly in this class
+    private String color;
     private long rate; //will be generated randomly in this class
+
+    public Product(long id) {
+        this.id = id;
+        Color randomColor = RandomColorGenerator.generateRandomColor(); // creating random color
+        this.color = RandomColorGenerator.convertColorToString(randomColor);
+        this.rate = (int) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
+    }
 
     public long getId() {
         return id;

@@ -1,15 +1,18 @@
 package com.oop.lab5.producer.module;
 
-public class Machine {
+import java.util.List;
+
+public class Machine implements IObservable {
     private long id;
-    private String color;
-    private boolean state = true;
+    private String color; // Machine color will be the same of current product color
+    private boolean state = true; // indicates whether the machine is busy or not
     private Product currentProduct;
     private long rate;  // will be generated randomly in this class
-    private ProductQueue connectedQueue;
+    private List<ProductQueue> connectedQueues; // Queues which supply the machine with products <which are observers>
 
     public Machine(long id) {
         this.id = id;
+        this.rate = (int) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
     }
 
     public long getId() {
@@ -42,17 +45,23 @@ public class Machine {
 
     public void setCurrentProduct(Product currentProduct) {
         this.currentProduct = currentProduct;
+        this.color = currentProduct.getColor();
     }
 
     public long getRate() {
         return rate;
     }
 
-    public ProductQueue getConnectedQueue() {
-        return connectedQueue;
+    public List<ProductQueue> getConnectedQueues() {
+        return connectedQueues;
     }
 
-    public void setConnectedQueue(ProductQueue connectedQueue) {
-        this.connectedQueue = connectedQueue;
+    public void setConnectedQueues(List<ProductQueue> connectedQueues) {
+        this.connectedQueues = connectedQueues;
+    }
+
+    @Override
+    public void notifyQueues() {
+        //inform the connected queues that the machine is ready and get the product from them
     }
 }

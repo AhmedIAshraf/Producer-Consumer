@@ -1,14 +1,15 @@
 package com.oop.lab5.producer.module;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class ProductQueue {
+public class ProductQueue implements IObserver{
     private long id;
-    private List<Machine> ccnnectedMachines = new ArrayList<>();
+    private List<Machine> connectedMachines;
     private Queue<Product> products = new PriorityQueue<>();
+
+    boolean machineState = true;
 
     public long getId() {
         return id;
@@ -18,12 +19,24 @@ public class ProductQueue {
         this.id = id;
     }
 
-    public List<Machine> getCcnnectedMachines() {
-        return ccnnectedMachines;
+    public List<Machine> getConnectedMachines() {
+        return connectedMachines;
     }
 
-    public void connectMachine(Machine machine) {
-        this.ccnnectedMachines.add(machine);
+    public void setConnectedMachines(List<Machine> connectedMachines) {
+        this.connectedMachines = connectedMachines;
+    }
+
+    public void setProducts(Queue<Product> products) {
+        this.products = products;
+    }
+
+    public boolean isMachineState() {
+        return machineState;
+    }
+
+    public void setMachineState(boolean machineState) {
+        this.machineState = machineState;
     }
 
     public Queue<Product> getProducts() {
@@ -32,5 +45,11 @@ public class ProductQueue {
 
     public void addProduct(Product product) {
         this.products.add(product);
+    }
+
+    @Override
+    public void updateMachineState(Machine machine) {
+        // change the state of the machine to be busy and send the product to the machine
+        // here will be the logic of sending the product to the machine
     }
 }
