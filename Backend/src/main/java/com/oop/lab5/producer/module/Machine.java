@@ -11,6 +11,7 @@ public class Machine implements IObservable, Runnable {
     private Product currentProduct;
     private long serviceTime;  // will be generated randomly in this class
     private List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
+    private ProductQueue distQueue;
 
     public Machine(long id) {
         this.id = id;
@@ -62,9 +63,18 @@ public class Machine implements IObservable, Runnable {
         this.connectedQueues = connectedQueues;
     }
 
+    public ProductQueue getDistQueue() {
+        return distQueue;
+    }
+
+    public void setDistQueue(ProductQueue distQueue) {
+        this.distQueue = distQueue;
+    }
+
     @Override
-    public void attachQueue(ProductQueue queue) {
+    public void attachQueue(ProductQueue queue) { // Queue is source
         this.connectedQueues.add(queue);
+        queue.connectToMachine(this);
     }
 
     @Override

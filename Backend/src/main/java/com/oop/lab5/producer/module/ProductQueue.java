@@ -28,8 +28,8 @@ public class ProductQueue implements IObserver{
         return connectedMachines;
     }
 
-    public void setConnectedMachines(List<Machine> connectedMachines) {
-        this.connectedMachines = connectedMachines;
+    public void connectToMachine(Machine machine) {
+        this.connectedMachines.add(machine);
     }
 
     public void setProducts(Queue<Product> products) {

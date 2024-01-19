@@ -1,16 +1,16 @@
 package com.oop.lab5.producer.controller;
 
-import com.oop.lab5.producer.service.Simulation;
+import com.oop.lab5.producer.service.Service;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("")
 @RestController
 @RequestMapping("/")
 public class Controller {
-    private Simulation simulator;
+    private Service service;
 
-    public Controller(Simulation simulator) {
-        this.simulator = simulator;
+    public Controller(Service service) {
+        this.service = service;
     }
 
     // We will start with adding a machine and a queue
@@ -25,7 +25,7 @@ public class Controller {
 
     @PostMapping("/addProducts")
     public void addProduct(@RequestParam long number) {
-        this.simulator.addProducts(number);
+        this.service.addProducts(number);
     }
 
 //    @GetMapping("/deleteItem")
