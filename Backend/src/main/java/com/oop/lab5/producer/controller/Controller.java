@@ -23,18 +23,18 @@ public class Controller {
         }
     }
 
-    @GetMapping("/deleteItem")
-    public String deleteItem(@RequestParam long id, @RequestParam boolean isMachine) {
-        if (isMachine) {
-            // remove the machine
-        } else {
-            // remove the queue
-        }
-        // return all the data >> konva board
-    }
+//    @GetMapping("/deleteItem")
+//    public String deleteItem(@RequestParam long id, @RequestParam boolean isMachine) {
+//        if (isMachine) {
+//            // remove the machine
+//        } else {
+//            // remove the queue
+//        }
+//        // return all the data >> konva board
+//    }
 
     @PostMapping("/connect")
-    public void connect(@RequestParam long srcID, @RequestParam long distID, @RequestParam boolean isMachine, @RequestParam boolean isQueue) {
+    public void connect(@RequestParam long srcID, @RequestParam long distID, @RequestParam boolean isSrcMachine) {
 
     }
 
