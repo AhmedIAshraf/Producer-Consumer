@@ -1,5 +1,7 @@
 package com.oop.lab5.producer.module;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,5 +89,19 @@ public class Machine implements IObservable, Runnable {
     @Override
     public void run() {
 
+    }
+
+    @Override
+    public String toString() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("state", state);
+        json.put("color", color);
+        json.put("currentProduct", currentProduct);
+        json.put("serviceTime", serviceTime);
+        json.put("connectedQueues", connectedQueues);
+        json.put("distQueue", distQueue);
+
+        return json.toString();
     }
 }

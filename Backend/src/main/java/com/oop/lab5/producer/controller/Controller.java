@@ -17,9 +17,9 @@ public class Controller {
     @PostMapping("/addItem")
     public void addItem(@RequestParam boolean isMachine) {
         if (isMachine) {
-            // create a machine
+            service.addMachine();
         } else {
-            // create a queue
+            service.addQueue();
         }
     }
 
@@ -28,24 +28,14 @@ public class Controller {
         this.service.addProducts(number);
     }
 
-//    @GetMapping("/deleteItem")
-//    public String deleteItem(@RequestParam long id, @RequestParam boolean isMachine) {
-//        if (isMachine) {
-//            // remove the machine
-//        } else {
-//            // remove the queue
-//        }
-//        // return all the data >> konva board
-//    }
-
     @PostMapping("/connect")
     public void connect(@RequestParam long srcID, @RequestParam long distID, @RequestParam boolean isSrcMachine) {
-
+        service.connect(srcID, distID, isSrcMachine);
     }
 
     @GetMapping("/run")
-    public String run() {
-        return "";
+    public void run() {
+        service.board();
     }
 
 }

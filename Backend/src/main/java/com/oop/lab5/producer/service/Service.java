@@ -1,8 +1,10 @@
 package com.oop.lab5.producer.service;
 
+import com.google.gson.Gson;
 import com.oop.lab5.producer.module.Machine;
 import com.oop.lab5.producer.module.Product;
 import com.oop.lab5.producer.module.ProductQueue;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -52,6 +54,18 @@ public class Service {
             Machine distM = this.machines.get(distID);
             ProductQueue srcQ = this.queues.get(srcID);
             distM.attachQueue(srcQ);
+        }
+    }
+
+    public void board() {
+        System.out.println("Queues");
+        for (long i = 1; i < this.queues.size() + 1; ++i) {
+            System.out.println(queues.get(i).toString());
+        }
+
+        System.out.println("Machines");
+        for (long i = 1; i < this.machines.size() + 1; ++i) {
+            System.out.println(machines.get(i).toString());
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.oop.lab5.producer.module;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,5 +58,17 @@ public class ProductQueue implements IObserver{
     public void updateMachineState(Machine machine) {
         // change the state of the machine to be busy and send the product to the machine
         // here will be the logic of sending the product to the machine
+    }
+
+    @Override
+    public String toString() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("connectedM", connectedMachines);
+        json.put("products", products);
+        json.put("machineState", machineState);
+        json.put("id", id);
+
+        return json.toString();
     }
 }

@@ -30,4 +30,13 @@ public class Product {
     public long getRate() {
         return rate;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", color='" + color + '\'' +
+                ", rate=" + rate +
+                '}';
+    }
 }
