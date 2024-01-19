@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Machine implements IObservable, Runnable {
+    private Thread thread;
     private long id;
     private String color = ""; // Machine color will be the same of current product color
     private boolean state = true; // indicates whether the machine is busy or not
@@ -47,14 +48,9 @@ public class Machine implements IObservable, Runnable {
         return currentProduct;
     }
 
-    public void addProduct(Product product) throws InterruptedException {
+    public void addProduct(Product product) {
         this.currentProduct = product;
         this.color = currentProduct.getColor();
-        Thread.sleep(this.serviceTime * 1000);
-        this.distQueue.addProduct(this.currentProduct);
-        this.currentProduct = null;
-        this.color = "";
-        this.run();
     }
 
     public long getServiceTime() {
@@ -87,21 +83,12 @@ public class Machine implements IObservable, Runnable {
     public void notifyQueues() {
         //inform the connected queues that the machine is ready and get the product from them
         for (ProductQueue queue : this.connectedQueues)
-            queue.updateState(this);
-    }
-
-    public Thread process() {
-        Thread thread = new Thread(this);
-        thread.start(); // call run
-        return thread;
+            queue.setMachineState(this.state);
     }
 
     @Override
     public void run() {
-        while (true) {
-            this.state = true;
-            this.notifyQueues();
-        }
+
     }
 
     @Override
