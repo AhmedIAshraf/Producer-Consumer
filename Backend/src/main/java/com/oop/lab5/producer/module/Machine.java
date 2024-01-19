@@ -14,7 +14,7 @@ public class Machine implements IObservable, Runnable {
 
     public Machine(long id) {
         this.id = id;
-        this.serviceTime = (int) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
+        this.serviceTime = (long) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
     }
 
     public long getId() {
