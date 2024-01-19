@@ -1,19 +1,20 @@
 package com.oop.lab5.producer.module;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
-public class Machine implements IObservable {
+public class Machine implements IObservable, Runnable {
+    private Thread thread;
     private long id;
-    private String color; // Machine color will be the same of current product color
+    private String color = ""; // Machine color will be the same of current product color
     private boolean state = true; // indicates whether the machine is busy or not
     private Product currentProduct;
-    private long rate;  // will be generated randomly in this class
-    private List<ProductQueue> connectedQueues; // Queues which supply the machine with products <which are observers>
+    private long serviceTime;  // will be generated randomly in this class
+    private List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
 
     public Machine(long id) {
         this.id = id;
-        this.rate = (int) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
+        this.serviceTime = (int) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
     }
 
     public long getId() {
@@ -44,13 +45,13 @@ public class Machine implements IObservable {
         return currentProduct;
     }
 
-    public void setCurrentProduct(Product currentProduct) {
-        this.currentProduct = currentProduct;
+    public void addProduct(Product product) {
+        this.currentProduct = product;
         this.color = currentProduct.getColor();
     }
 
-    public long getRate() {
-        return rate;
+    public long getServiceTime() {
+        return serviceTime;
     }
 
     public List<ProductQueue> getConnectedQueues() {
@@ -71,5 +72,10 @@ public class Machine implements IObservable {
         //inform the connected queues that the machine is ready and get the product from them
         for (ProductQueue queue : this.connectedQueues)
             queue.setMachineState(this.state);
+    }
+
+    @Override
+    public void run() {
+
     }
 }

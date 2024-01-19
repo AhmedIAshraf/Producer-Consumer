@@ -25,7 +25,7 @@ public class Controller {
 
     @PostMapping("/addProducts")
     public void addProduct(@RequestParam long number) {
-
+        this.simulator.addProducts(number);
     }
 
 //    @GetMapping("/deleteItem")

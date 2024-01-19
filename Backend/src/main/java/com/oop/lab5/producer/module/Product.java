@@ -7,7 +7,7 @@ import java.awt.*;
 public class Product {
     private long id;
     private String color;
-    private long rate; //will be generated randomly in this class
+    private long rate; // will be generated randomly in this class
 
     public Product(long id) {
         this.id = id;

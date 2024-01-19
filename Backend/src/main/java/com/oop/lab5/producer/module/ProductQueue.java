@@ -1,13 +1,18 @@
 package com.oop.lab5.producer.module;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 public class ProductQueue implements IObserver{
     private long id;
-    private List<Machine> connectedMachines;
+    private List<Machine> connectedMachines = new ArrayList<>();
     private Queue<Product> products = new LinkedList<>();
+
+    public ProductQueue(long id) {
+        this.id = id;
+    }
 
     private boolean machineState = true;
 
