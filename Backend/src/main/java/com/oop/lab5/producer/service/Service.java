@@ -1,10 +1,8 @@
 package com.oop.lab5.producer.service;
 
-import com.google.gson.Gson;
 import com.oop.lab5.producer.module.Machine;
 import com.oop.lab5.producer.module.Product;
 import com.oop.lab5.producer.module.ProductQueue;
-import org.json.JSONObject;
 
 import java.util.*;
 
@@ -13,14 +11,18 @@ public class Service {
     private long productID = 1;
     private long machineID = 1;
     private long queueID = 1;
-    private HashMap<Long, Machine> machines;
-    private HashMap<Long, ProductQueue> queues;
-    private Queue<Product> products;
+    protected HashMap<Long, Machine> machines;
+    protected HashMap<Long, ProductQueue> queues;
+    protected Queue<Product> products;
 
     public Service() {
         this.machines = new HashMap<>();
         this.queues = new HashMap<>();
         this.products = new LinkedList<>();
+    }
+
+    void run(){
+        
     }
 
 
@@ -57,6 +59,13 @@ public class Service {
         }
     }
 
+    public ProductQueue outputStream() {
+        for (ProductQueue q : this.queues.values()) {
+            if (q.getConnectedMachines().isEmpty())
+                return q;
+        }
+    }
+
     public void board() {
         System.out.println("Queues");
         for (long i = 1; i < this.queues.size() + 1; ++i) {
@@ -67,5 +76,12 @@ public class Service {
         for (long i = 1; i < this.machines.size() + 1; ++i) {
             System.out.println(machines.get(i).toString());
         }
+    }
+
+    public boolean isFinished() { // check if the program finished or not
+        return false;
+    }
+
+    public String getStatus() {
     }
 }

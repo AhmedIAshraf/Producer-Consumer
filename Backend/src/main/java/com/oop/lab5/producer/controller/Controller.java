@@ -38,4 +38,14 @@ public class Controller {
         service.board();
     }
 
+    @GetMapping("/getStatus")
+    public String status() {
+        return service.getStatus();
+    }
+
+    @GetMapping("/finished")
+    public boolean finished() {
+        return service.isFinished();
+    }
+
 }
