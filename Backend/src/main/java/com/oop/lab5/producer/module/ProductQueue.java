@@ -9,14 +9,12 @@ import java.util.Queue;
 
 public class ProductQueue implements IObserver{
     private long id;
-    private List<Machine> connectedMachines = new ArrayList<>();
+    private List<Machine> connectedMachines = new ArrayList<>(); // destination Machines
     private Queue<Product> products = new LinkedList<>();
 
     public ProductQueue(long id) {
         this.id = id;
     }
-
-    private boolean machineState = true;
 
     public long getId() {
         return id;
@@ -38,14 +36,6 @@ public class ProductQueue implements IObserver{
         this.products = products;
     }
 
-    public boolean isMachineState() {
-        return machineState;
-    }
-
-    public void setMachineState(boolean machineState) {
-        this.machineState = machineState;
-    }
-
     public Queue<Product> getProducts() {
         return products;
     }
@@ -55,9 +45,14 @@ public class ProductQueue implements IObserver{
     }
 
     @Override
-    public void updateMachineState(Machine machine) {
+    public void updateState(Machine machine) {
         // change the state of the machine to be busy and send the product to the machine
         // here will be the logic of sending the product to the machine
+        if (this.products.isEmpty())
+            return;
+
+        machine.setState(false);
+        machine.addProduct(this.products.poll());
     }
 
     @Override
@@ -66,7 +61,6 @@ public class ProductQueue implements IObserver{
         json.put("id", id);
         json.put("connectedM", connectedMachines);
         json.put("products", products);
-        json.put("machineState", machineState);
         json.put("id", id);
 
         return json.toString();
