@@ -1,31 +1,29 @@
 package com.oop.lab5.producer.service;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class RandomColorGenerator {
-//    public static void main(String[] args) {
-//        // Generate a random color
-//        Color randomColor = generateRandomColor();
-//
-//        // Convert the color to a string in RGB format
-//        String colorString = convertColorToString(randomColor);
-//
-//        // Print the result
-//        System.out.println("Random Color: " + colorString);
-//    }
-
-    public static Color generateRandomColor() {
+    private static List<String> colors = new ArrayList<>(
+            List.of("red", "yellow", "green", "cyan", "grey", "blue", "purple", "orange", "pink", "black", "violet", "indigo", "brown", "aqua")
+    );
+    public static String generateRandomColor() {
         // Generate random values for red, green, and blue components
-        int red = (int) (Math.random() * 256);
-        int green = (int) (Math.random() * 256);
-        int blue = (int) (Math.random() * 256);
+        Random random = new Random();
+        int color_ind = Math.abs(random.nextInt()) % colors.size();
 
-        // Create a Color object with the random values
-        return new Color(red, green, blue);
+        return colors.remove(color_ind);
     }
 
-    public static String convertColorToString(Color color) {
-        // Convert the RGB components to a string in the format "(R, G, B)"
-        return "(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + ")";
-    }
+//    public static void main(String[] args) {
+//        RandomColorGenerator r = new RandomColorGenerator();
+//        System.out.println(r.generateRandomColor());
+//        System.out.println(r.generateRandomColor());
+//        System.out.println(r.generateRandomColor());
+//        System.out.println(r.generateRandomColor());
+//        System.out.println(r.generateRandomColor());
+//        System.out.println(r.generateRandomColor());
+//    }
 }

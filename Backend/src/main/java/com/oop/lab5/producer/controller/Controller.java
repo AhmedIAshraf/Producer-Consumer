@@ -23,6 +23,11 @@ public class Controller {
         }
     }
 
+    @PostMapping("/addProducts")
+    public void addProduct(@RequestParam long number) {
+
+    }
+
 //    @GetMapping("/deleteItem")
 //    public String deleteItem(@RequestParam long id, @RequestParam boolean isMachine) {
 //        if (isMachine) {
@@ -40,7 +45,7 @@ public class Controller {
 
     @GetMapping("/run")
     public String run() {
-
+        return "";
     }
 
 }

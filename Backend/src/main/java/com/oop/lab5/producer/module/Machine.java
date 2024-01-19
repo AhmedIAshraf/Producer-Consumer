@@ -1,6 +1,7 @@
 package com.oop.lab5.producer.module;
 
 import java.util.List;
+import java.util.Queue;
 
 public class Machine implements IObservable {
     private long id;
@@ -61,7 +62,14 @@ public class Machine implements IObservable {
     }
 
     @Override
+    public void attachQueue(ProductQueue queue) {
+        this.connectedQueues.add(queue);
+    }
+
+    @Override
     public void notifyQueues() {
         //inform the connected queues that the machine is ready and get the product from them
+        for (ProductQueue queue : this.connectedQueues)
+            queue.setMachineState(this.state);
     }
 }

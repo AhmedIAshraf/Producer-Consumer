@@ -3,14 +3,13 @@ package com.oop.lab5.producer.module;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Queue;
 
 public class ProductQueue implements IObserver{
     private long id;
     private List<Machine> connectedMachines;
     private Queue<Product> products = new LinkedList<>();
 
-    boolean machineState = true;
+    private boolean machineState = true;
 
     public long getId() {
         return id;

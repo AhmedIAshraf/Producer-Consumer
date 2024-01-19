@@ -11,8 +11,7 @@ public class Product {
 
     public Product(long id) {
         this.id = id;
-        Color randomColor = RandomColorGenerator.generateRandomColor(); // creating random color
-        this.color = RandomColorGenerator.convertColorToString(randomColor);
+        this.color = RandomColorGenerator.generateRandomColor(); // creating random color
         this.rate = (int) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
     }
 
