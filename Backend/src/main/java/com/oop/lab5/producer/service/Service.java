@@ -25,7 +25,6 @@ public class Service {
         
     }
 
-
     public void addProducts(long number) {
         while (number < 0) {
             Product p = new Product(this.productID++);
