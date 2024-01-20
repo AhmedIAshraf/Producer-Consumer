@@ -18,20 +18,30 @@ public class ProductionLineService {
     protected HashMap<Long, Machine> machines;
     protected HashMap<Long, ProductQueue> queues;
     protected Queue<Product> products;
+    public List<Thread> threads = new ArrayList<>();
     public static Originator originator = new Originator(); // apply singleton dp for best practice
     public static CareTaker careTaker = new CareTaker();  // apply singleton dp for best practice
 
-    public ProductionLineService() {
+    private static ProductionLineService instance ;
+    private ProductionLineService() {
         this.machines = new HashMap<>();
         this.queues = new HashMap<>();
         this.products = new LinkedList<>();
+    }
+
+    public static ProductionLineService getInstance() {
+        if(instance == null){
+            return new ProductionLineService();
+        }
+        return instance;
     }
 
     public void run(){
         originator.clear();
         careTaker.clear();
         //write run logic
-        
+        //handle if there is no products in q0
+        machines.forEach((key,value) ->threads.add(value.process()));
     }
 
     public void addProducts(long number) {
@@ -117,6 +127,25 @@ public class ProductionLineService {
         for (long i = 1; i < this.machines.size() + 1; ++i) {
             System.out.println(machines.get(i).toString());
         }
+    }
+
+    public static void main(String[] args) {
+       /// ProductQueue q0 = new ProductQueue(0);
+        //ProductQueue q1 = new ProductQueue(1);
+       // Machine m0 = new Machine(0);
+        //Machine m1 = new Machine(1);
+
+        ProductionLineService service = new ProductionLineService();
+        service.addMachine();
+        service.addMachine();
+        service.addQueue();
+        service.addQueue();
+        service.connect(1,1,false);
+        service.connect(1,2,false);
+        service.connect(1,2,true);
+        service.connect(2,2,true);
+        service.addProducts(10);
+        service.run();
     }
 }
 

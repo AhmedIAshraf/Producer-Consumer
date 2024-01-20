@@ -35,17 +35,14 @@ public class Controller {
 
     @GetMapping("/run")
     public void run() {
-        service.board();
+        service.run();
     }
 
-    @GetMapping("/getStatus")
-    public String status() {
-        return service.getStatus();
-    }
 
-    @GetMapping("/finished")
-    public boolean finished() {
-        return service.isFinished();
-    }
+
+   // @GetMapping("/finished")
+    //public boolean finished() {
+   //     return service.isFinished();
+    //}
 
 }

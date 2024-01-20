@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Machine implements IObservable, Runnable {
+    private ProductionLineService service ;
     private Thread thread;
     private long id;
     private String color = ""; // Machine color will be the same of current product color
@@ -20,6 +21,7 @@ public class Machine implements IObservable, Runnable {
     public Machine(long id) {
         this.id = id;
         this.serviceTime = (long) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
+        this.service = ProductionLineService.getInstance();
     }
 
     public long getId() {
@@ -53,7 +55,7 @@ public class Machine implements IObservable, Runnable {
     public void addProduct(Product product) throws InterruptedException {
         this.currentProduct = product;
         this.color = currentProduct.getColor();
-
+        service.autoSave();
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;

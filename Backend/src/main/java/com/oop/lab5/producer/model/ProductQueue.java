@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Queue;
 
 public class ProductQueue implements IObserver {
+   // private ProductionLineService service;
     private long id;
     private List<Machine> connectedMachines = new ArrayList<>(); // destination Machines
     private Queue<Product> products = new LinkedList<>();
@@ -55,6 +56,7 @@ public class ProductQueue implements IObserver {
 
         machine.setState(false);
         machine.addProduct(this.products.poll());
+       // service.getInstance().autoSave();
     }
 
     @Override
