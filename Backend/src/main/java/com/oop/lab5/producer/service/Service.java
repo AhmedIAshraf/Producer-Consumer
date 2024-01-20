@@ -3,6 +3,10 @@ package com.oop.lab5.producer.service;
 import com.oop.lab5.producer.module.Machine;
 import com.oop.lab5.producer.module.Product;
 import com.oop.lab5.producer.module.ProductQueue;
+import com.oop.lab5.producer.module.snapshot.CareTaker;
+import com.oop.lab5.producer.module.snapshot.Memento;
+import com.oop.lab5.producer.module.snapshot.Originator;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -14,6 +18,9 @@ public class Service {
     protected HashMap<Long, Machine> machines;
     protected HashMap<Long, ProductQueue> queues;
     protected Queue<Product> products;
+    public static Originator originator = new Originator(); // apply singleton dp for best practice
+    public static CareTaker careTaker = new CareTaker();  // apply singleton dp for best practice
+    private boolean isReplayFinished = false;
 
     public Service() {
         this.machines = new HashMap<>();
@@ -21,7 +28,10 @@ public class Service {
         this.products = new LinkedList<>();
     }
 
-    void run(){
+    public void run(){
+        originator.clear();
+        careTaker.clear();
+        //write run logic
         
     }
 
@@ -79,15 +89,36 @@ public class Service {
     }
 
     public boolean isFinished() { // check if the program finished or not
-        return false;
+        return this.isReplayFinished;
     }
 
     public String getStatus() {
         return "";
     }
 
+    public void autoSave() { // Make snapshot
+
+        for (ProductQueue q : this.queues.values())
+            this.originator.addQueue(q);
+
+        for (Machine m : this.machines.values())
+            originator.addMachine(m);
+
+        this.careTaker.add(this.originator.saveStateToMemento());
+
+    }
+
+    private int step = 0;
     public String replay() {
-        
+        if (careTaker.size() == 0) {
+            this.isReplayFinished = true;
+            return "finished";
+        }
+
+        originator.getStateFromMemento(careTaker.get(this.step++));
+        JSONObject stepStatusJson = new JSONObject();
+
+
     }
 }
 

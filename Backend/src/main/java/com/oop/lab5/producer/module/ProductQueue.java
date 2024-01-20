@@ -1,5 +1,6 @@
 package com.oop.lab5.producer.module;
 
+import com.oop.lab5.producer.service.Service;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ public class ProductQueue implements IObserver{
 
         machine.setState(false);
         machine.addProduct(this.products.poll());
+        Service.originator.addQueue(this);
+        Service.careTaker.add(Service.originator.saveStateToMemento());
     }
 
     @Override

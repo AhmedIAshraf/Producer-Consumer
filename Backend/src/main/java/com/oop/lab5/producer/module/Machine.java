@@ -1,5 +1,6 @@
 package com.oop.lab5.producer.module;
 
+import com.oop.lab5.producer.service.Service;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -51,6 +52,9 @@ public class Machine implements IObservable, Runnable {
     public void addProduct(Product product) throws InterruptedException {
         this.currentProduct = product;
         this.color = currentProduct.getColor();
+        Service.originator.addMachine(this);
+        Service.careTaker.add(Service.originator.saveStateToMemento());
+
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;
