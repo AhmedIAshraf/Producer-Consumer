@@ -4,8 +4,8 @@ import com.oop.lab5.producer.module.Machine;
 import com.oop.lab5.producer.module.Product;
 import com.oop.lab5.producer.module.ProductQueue;
 import com.oop.lab5.producer.module.snapshot.CareTaker;
-import com.oop.lab5.producer.module.snapshot.Memento;
 import com.oop.lab5.producer.module.snapshot.Originator;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -110,15 +110,27 @@ public class Service {
 
     private int step = 0;
     public String replay() {
-        if (careTaker.size() == 0) {
+        if (this.step >= careTaker.size()) {
             this.isReplayFinished = true;
             return "finished";
         }
 
         originator.getStateFromMemento(careTaker.get(this.step++));
         JSONObject stepStatusJson = new JSONObject();
+        JSONArray colors = new JSONArray();
+        originator.getColors().forEach((key, value) ->
+                colors.put(new JSONObject().put("id", key).put("color", value))
+        );
 
+        JSONArray qProducts = new JSONArray();
+        originator.getQueues().forEach((key, value) ->
+                qProducts.put(new JSONObject().put("id", key).put("products", value))
+        );
 
+        stepStatusJson.put("colors", colors);
+        stepStatusJson.put("products", qProducts);
+
+        return stepStatusJson.toString();
     }
 }
 
