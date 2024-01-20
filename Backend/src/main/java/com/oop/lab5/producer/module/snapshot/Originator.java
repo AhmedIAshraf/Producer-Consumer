@@ -6,8 +6,8 @@ import com.oop.lab5.producer.module.ProductQueue;
 import java.util.HashMap;
 
 public class Originator {
-    private HashMap<Long, String> colors = new HashMap<Long, String>();
-    private HashMap<Long, Integer> queues = new HashMap<Long, Integer>();
+    private HashMap<Long, String> colors = new HashMap<Long, String>(); // Machines colors
+    private HashMap<Long, Integer> queues = new HashMap<Long, Integer>(); // No. of products in queues
 
     public void addMachine (Machine machine) {
         colors.put(machine.getId(), machine.getColor());

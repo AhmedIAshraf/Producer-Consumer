@@ -29,8 +29,8 @@ public class Controller {
     }
 
     @PostMapping("/connect")
-    public void connect(@RequestParam long srcID, @RequestParam long distID, @RequestParam boolean isSrcMachine) {
-        service.connect(srcID, distID, isSrcMachine);
+    public void connect(@RequestParam long srcID, @RequestParam long destID, @RequestParam boolean isSrcMachine) {
+        service.connect(srcID, destID, isSrcMachine);
     }
 
     @GetMapping("/run")

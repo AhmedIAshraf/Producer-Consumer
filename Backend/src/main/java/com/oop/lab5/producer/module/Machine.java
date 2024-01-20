@@ -13,7 +13,7 @@ public class Machine implements IObservable, Runnable {
     private Product currentProduct;
     private long serviceTime;  // will be generated randomly in this class
     private List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
-    private ProductQueue distQueue;
+    private ProductQueue destQueue;
 
     public Machine(long id) {
         this.id = id;
@@ -52,7 +52,7 @@ public class Machine implements IObservable, Runnable {
         this.currentProduct = product;
         this.color = currentProduct.getColor();
         Thread.sleep(this.serviceTime * 1000);
-        this.distQueue.addProduct(this.currentProduct);
+        this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;
         this.color = "";
         this.run();
@@ -70,12 +70,12 @@ public class Machine implements IObservable, Runnable {
         this.connectedQueues = connectedQueues;
     }
 
-    public ProductQueue getDistQueue() {
-        return distQueue;
+    public ProductQueue getDestQueue() {
+        return destQueue;
     }
 
-    public void setDistQueue(ProductQueue distQueue) {
-        this.distQueue = distQueue;
+    public void setDestQueue(ProductQueue destQueue) {
+        this.destQueue = destQueue;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class Machine implements IObservable, Runnable {
         json.put("currentProduct", currentProduct);
         json.put("serviceTime", serviceTime);
         json.put("connectedQueues", connectedQueues);
-        json.put("distQueue", distQueue);
+        json.put("destQueue", destQueue);
 
         return json.toString();
     }

@@ -7,10 +7,11 @@ import java.util.Random;
 
 public class RandomColorGenerator {
     private static List<String> colors = new ArrayList<>(
-            List.of("red", "yellow", "green", "cyan", "grey", "blue", "purple", "orange", "pink", "black", "violet", "indigo", "brown", "aqua")
+            List.of("red", "yellow", "green", "cyan", "grey", "blue", "purple", "orange", "pink", "black",
+                    "violet", "indigo", "brown", "aqua", "maroon", "navy", "beige", "crimson", "magenta", "yellowgreen")
     );
     public static String generateRandomColor() {
-        // Generate random values for red, green, and blue components
+        // Generate random colors without repeating
         Random random = new Random();
         int color_ind = Math.abs(random.nextInt()) % colors.size();
 

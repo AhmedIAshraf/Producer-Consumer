@@ -46,15 +46,15 @@ public class Service {
         this.queues.put(this.queueID++, q);
     }
 
-    public void connect(long srcID, long distID, boolean isSrcMachine) {
+    public void connect(long srcID, long destID, boolean isSrcMachine) {
         if (isSrcMachine) {
             Machine srcM = this.machines.get(srcID);
-            ProductQueue distQ = this.queues.get(distID);
-            srcM.setDistQueue(distQ);
+            ProductQueue destQ = this.queues.get(destID);
+            srcM.setDestQueue(destQ);
         }else {
-            Machine distM = this.machines.get(distID);
+            Machine destM = this.machines.get(destID);
             ProductQueue srcQ = this.queues.get(srcID);
-            distM.attachQueue(srcQ);
+            destM.attachQueue(srcQ);
         }
     }
 
@@ -85,4 +85,10 @@ public class Service {
     public String getStatus() {
         return "";
     }
+
+    public String replay() {
+        
+    }
 }
+
+// saving steps in order to sending them to frontend

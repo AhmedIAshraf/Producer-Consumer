@@ -2,8 +2,6 @@ package com.oop.lab5.producer.module;
 
 import com.oop.lab5.producer.service.RandomColorGenerator;
 
-import java.awt.*;
-
 public class Product {
     private long id;
     private String color;
