@@ -85,7 +85,7 @@ public class Machine implements IObservable, Runnable {
     }
 
     @Override
-    public void notifyQueues() {
+    public void notifyQueues() throws InterruptedException {
         //inform the connected queues that the machine is ready and get the product from them
         for (ProductQueue queue : this.connectedQueues)
             queue.updateState(this);
@@ -101,7 +101,11 @@ public class Machine implements IObservable, Runnable {
     public void run() {
         while (true) {
             this.state = true;
-            this.notifyQueues();
+            try {
+                this.notifyQueues();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

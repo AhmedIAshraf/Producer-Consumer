@@ -63,6 +63,7 @@ public class Service {
             if (q.getConnectedMachines().isEmpty())
                 return q;
         }
+        return null;
     }
 
     public void board() {
@@ -82,5 +83,6 @@ public class Service {
     }
 
     public String getStatus() {
+        return "";
     }
 }
