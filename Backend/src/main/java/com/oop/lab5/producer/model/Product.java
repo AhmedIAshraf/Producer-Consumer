@@ -1,4 +1,4 @@
-package com.oop.lab5.producer.module;
+package com.oop.lab5.producer.model;
 
 import com.oop.lab5.producer.service.RandomColorGenerator;
 

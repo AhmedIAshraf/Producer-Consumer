@@ -1,15 +1,15 @@
 package com.oop.lab5.producer.controller;
 
-import com.oop.lab5.producer.service.Service;
+import com.oop.lab5.producer.service.ProductionLineService;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("")
 @RestController
 @RequestMapping("/")
 public class Controller {
-    private Service service;
+    private ProductionLineService service;
 
-    public Controller(Service service) {
+    public Controller(ProductionLineService service) {
         this.service = service;
     }
 

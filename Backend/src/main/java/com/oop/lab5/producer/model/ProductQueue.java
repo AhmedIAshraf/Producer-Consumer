@@ -1,6 +1,7 @@
-package com.oop.lab5.producer.module;
+package com.oop.lab5.producer.model;
 
-import com.oop.lab5.producer.service.Service;
+import com.oop.lab5.producer.observer.IObserver;
+import com.oop.lab5.producer.service.ProductionLineService;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class ProductQueue implements IObserver{
+public class ProductQueue implements IObserver {
     private long id;
     private List<Machine> connectedMachines = new ArrayList<>(); // destination Machines
     private Queue<Product> products = new LinkedList<>();
@@ -54,8 +55,8 @@ public class ProductQueue implements IObserver{
 
         machine.setState(false);
         machine.addProduct(this.products.poll());
-        Service.originator.addQueue(this);
-        Service.careTaker.add(Service.originator.saveStateToMemento());
+        ProductionLineService.originator.addQueue(this);
+        ProductionLineService.careTaker.add(ProductionLineService.originator.saveStateToMemento());
     }
 
     @Override

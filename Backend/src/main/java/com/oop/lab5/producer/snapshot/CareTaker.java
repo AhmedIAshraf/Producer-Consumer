@@ -1,4 +1,4 @@
-package com.oop.lab5.producer.module.snapshot;
+package com.oop.lab5.producer.snapshot;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,17 +1,17 @@
 package com.oop.lab5.producer.service;
 
-import com.oop.lab5.producer.module.Machine;
-import com.oop.lab5.producer.module.Product;
-import com.oop.lab5.producer.module.ProductQueue;
-import com.oop.lab5.producer.module.snapshot.CareTaker;
-import com.oop.lab5.producer.module.snapshot.Originator;
+import com.oop.lab5.producer.model.Machine;
+import com.oop.lab5.producer.model.Product;
+import com.oop.lab5.producer.model.ProductQueue;
+import com.oop.lab5.producer.snapshot.CareTaker;
+import com.oop.lab5.producer.snapshot.Originator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
 
 @org.springframework.stereotype.Service
-public class Service {
+public class ProductionLineService {
     private long productID = 1;
     private long machineID = 1;
     private long queueID = 1;
@@ -22,7 +22,7 @@ public class Service {
     public static CareTaker careTaker = new CareTaker();  // apply singleton dp for best practice
     private boolean isReplayFinished = false;
 
-    public Service() {
+    public ProductionLineService() {
         this.machines = new HashMap<>();
         this.queues = new HashMap<>();
         this.products = new LinkedList<>();

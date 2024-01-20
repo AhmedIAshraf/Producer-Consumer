@@ -1,17 +1,17 @@
 package com.oop.lab5.producer.service;
 
-import com.oop.lab5.producer.module.ProductQueue;
+import com.oop.lab5.producer.model.ProductQueue;
 
-public class Simulator {
-    private Simulator instance;
+public class SimulationService {
+    private SimulationService instance;
 
-    private Service service;
+    private ProductionLineService service;
 
-    private Simulator() {}
+    private SimulationService() {}
 
-    public Simulator getInstance() {
+    public SimulationService getInstance() {
         if (this.instance == null)
-            return new Simulator();
+            return new SimulationService();
         return instance;
     }
 

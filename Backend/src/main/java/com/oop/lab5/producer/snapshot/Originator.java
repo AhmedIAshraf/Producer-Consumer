@@ -1,7 +1,7 @@
-package com.oop.lab5.producer.module.snapshot;
+package com.oop.lab5.producer.snapshot;
 
-import com.oop.lab5.producer.module.Machine;
-import com.oop.lab5.producer.module.ProductQueue;
+import com.oop.lab5.producer.model.Machine;
+import com.oop.lab5.producer.model.ProductQueue;
 
 import java.util.HashMap;
 
