@@ -55,8 +55,6 @@ public class ProductQueue implements IObserver {
 
         machine.setState(false);
         machine.addProduct(this.products.poll());
-        ProductionLineService.originator.addQueue(this);
-        ProductionLineService.careTaker.add(ProductionLineService.originator.saveStateToMemento());
     }
 
     @Override

@@ -20,7 +20,6 @@ public class ProductionLineService {
     protected Queue<Product> products;
     public static Originator originator = new Originator(); // apply singleton dp for best practice
     public static CareTaker careTaker = new CareTaker();  // apply singleton dp for best practice
-    private boolean isReplayFinished = false;
 
     public ProductionLineService() {
         this.machines = new HashMap<>();
@@ -76,26 +75,6 @@ public class ProductionLineService {
         return null;
     }
 
-    public void board() {
-        System.out.println("Queues");
-        for (long i = 1; i < this.queues.size() + 1; ++i) {
-            System.out.println(queues.get(i).toString());
-        }
-
-        System.out.println("Machines");
-        for (long i = 1; i < this.machines.size() + 1; ++i) {
-            System.out.println(machines.get(i).toString());
-        }
-    }
-
-    public boolean isFinished() { // check if the program finished or not
-        return this.isReplayFinished;
-    }
-
-    public String getStatus() {
-        return "";
-    }
-
     public void autoSave() { // Make snapshot << this method should be used during simulation
         for (ProductQueue q : this.queues.values())
             originator.addQueue(q);
@@ -107,30 +86,50 @@ public class ProductionLineService {
 
     }
 
-    private int step = 0;
     public String replay() {
-        if (this.step >= careTaker.size()) {
-            this.isReplayFinished = true;
-            return "finished";
+        int step = 0;
+        JSONObject stepStatusJson = new JSONObject();
+        while (step < careTaker.size()) {
+            originator.getStateFromMemento(careTaker.get(step++));
+            JSONArray colors = new JSONArray();
+            originator.getColors().forEach((key, value) ->
+                    colors.put(new JSONObject().put("id", key).put("color", value))
+            );
+
+            JSONArray qProducts = new JSONArray();
+            originator.getQueues().forEach((key, value) ->
+                    qProducts.put(new JSONObject().put("id", key).put("products", value))
+            );
+
+            stepStatusJson.put("colors", colors);
+            stepStatusJson.put("products", qProducts);
+        }
+        return stepStatusJson.toString();
+    }
+
+    public void board() {
+        System.out.println("Queues");
+        for (long i = 1; i < this.queues.size() + 1; ++i) {
+            System.out.println(queues.get(i).toString());
         }
 
-        originator.getStateFromMemento(careTaker.get(this.step++));
-        JSONObject stepStatusJson = new JSONObject();
-        JSONArray colors = new JSONArray();
-        originator.getColors().forEach((key, value) ->
-                colors.put(new JSONObject().put("id", key).put("color", value))
-        );
-
-        JSONArray qProducts = new JSONArray();
-        originator.getQueues().forEach((key, value) ->
-                qProducts.put(new JSONObject().put("id", key).put("products", value))
-        );
-
-        stepStatusJson.put("colors", colors);
-        stepStatusJson.put("products", qProducts);
-
-        return stepStatusJson.toString();
+        System.out.println("Machines");
+        for (long i = 1; i < this.machines.size() + 1; ++i) {
+            System.out.println(machines.get(i).toString());
+        }
     }
 }
 
 // saving steps in order to sending them to frontend
+
+/*
+while(true) {
+    djhnvfsksdfc
+
+
+
+
+
+    autosave();
+}
+ */

@@ -53,8 +53,6 @@ public class Machine implements IObservable, Runnable {
     public void addProduct(Product product) throws InterruptedException {
         this.currentProduct = product;
         this.color = currentProduct.getColor();
-        ProductionLineService.originator.addMachine(this);
-        ProductionLineService.careTaker.add(ProductionLineService.originator.saveStateToMemento());
 
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);

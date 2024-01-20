@@ -49,7 +49,6 @@ public class CareTaker {
 //Use the following line to get how many states are saved
 //careTaker.size()
 
-// -->
 //Loop from zero to the number of states to get each state
 //originator.getStateFromMemento(careTaker.get(index));
 
