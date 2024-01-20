@@ -96,15 +96,14 @@ public class Service {
         return "";
     }
 
-    public void autoSave() { // Make snapshot
-
+    public void autoSave() { // Make snapshot << this method should be used during simulation
         for (ProductQueue q : this.queues.values())
-            this.originator.addQueue(q);
+            originator.addQueue(q);
 
         for (Machine m : this.machines.values())
             originator.addMachine(m);
 
-        this.careTaker.add(this.originator.saveStateToMemento());
+        careTaker.add(originator.saveStateToMemento());
 
     }
 
