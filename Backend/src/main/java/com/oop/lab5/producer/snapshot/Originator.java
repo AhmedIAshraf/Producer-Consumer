@@ -44,8 +44,6 @@ public class Originator {
     public String toString() {
         Gson gson = new Gson();
         JSONObject jsonObject = new JSONObject();
-//        System.out.println(colors.size());
-//        System.out.println(queues.size());
         jsonObject.put("colors", gson.toJson(colors));
         jsonObject.put("products", gson.toJson(queues));
 
