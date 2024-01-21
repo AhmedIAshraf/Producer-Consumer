@@ -21,6 +21,7 @@ public class Machine implements IObservable, Runnable {
     public Machine(long id) {
         this.id = id;
         this.serviceTime = (long) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
+        this.serviceTime = 1;
         this.service = ProductionLineService.getInstance();
         System.out.println("Service time " + serviceTime);
     }
@@ -54,14 +55,19 @@ public class Machine implements IObservable, Runnable {
     }
 
     public void addProduct(Product product) throws InterruptedException {
+//        System.out.println("after sending product ");
+//        service.autoSave(); // -->
         this.currentProduct = product;
         this.color = currentProduct.getColor(); // --> null pointer sometimes
-        System.out.println("classmID" + this.id);
+        System.out.println("after receiving product ");
         service.autoSave(); // -->
+        System.out.println("classmID" + this.id);
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;
         this.color = "";
+        System.out.println("after processing product ");
+        service.autoSave(); // -->
 //        this.run();
     }
 
@@ -107,6 +113,10 @@ public class Machine implements IObservable, Runnable {
     @Override
     public void run() {
         while (true) {
+            if (service.outputStream().getProducts().size() == service.productsNo())
+                break;
+//            System.out.println("size");
+//            System.out.println(service.productsNo());
             this.state = true;
             try {
                 this.notifyQueues();

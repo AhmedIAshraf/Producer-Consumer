@@ -42,7 +42,7 @@ public class ProductQueue implements IObserver {
         return products;
     }
 
-    public void addProduct(Product product) {
+    public synchronized void addProduct(Product product) {
         this.products.add(product);
     }
 
@@ -58,7 +58,7 @@ public class ProductQueue implements IObserver {
             return;
         machine.setState(false);
         machine.addProduct(getProduct());
-       // service.getInstance().autoSave();
+        // service.getInstance().autoSave();
     }
 
     @Override
