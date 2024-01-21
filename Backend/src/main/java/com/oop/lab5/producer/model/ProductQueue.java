@@ -1,5 +1,6 @@
 package com.oop.lab5.producer.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oop.lab5.producer.observer.IObserver;
 import com.oop.lab5.producer.service.ProductionLineService;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public class ProductQueue implements IObserver {
     }
 
     @Override
-    public void updateState(Machine machine) throws InterruptedException {
+    public void updateState(Machine machine) throws InterruptedException, JsonProcessingException {
         // change the state of the machine to be busy and send the product to the machine
         // here will be the logic of sending the product to the machine
         if (this.products.isEmpty())

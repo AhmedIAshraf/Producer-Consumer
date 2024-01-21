@@ -10,7 +10,7 @@ public class Controller {
     private ProductionLineService service;
 
     public Controller(ProductionLineService service) {
-        this.service = service;
+        this.service = ProductionLineService.getInstance();
     }
 
     // We will start with adding a machine and a queue

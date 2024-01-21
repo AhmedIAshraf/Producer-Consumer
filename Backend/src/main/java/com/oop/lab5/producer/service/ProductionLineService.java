@@ -1,5 +1,6 @@
 package com.oop.lab5.producer.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oop.lab5.producer.model.Machine;
 import com.oop.lab5.producer.model.Product;
 import com.oop.lab5.producer.model.ProductQueue;
@@ -44,7 +45,7 @@ public class ProductionLineService {
         machines.forEach((key,value) -> threads.add(value.process()));
     }
 
-    public synchronized String sendStep (){
+    public synchronized String sendStep() throws JsonProcessingException {
         JSONObject singleStep = new JSONObject();
         JSONArray colors = new JSONArray();
         JSONArray products = new JSONArray();
