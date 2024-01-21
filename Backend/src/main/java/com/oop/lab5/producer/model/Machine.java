@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Machine implements IObservable, Runnable {
-    private ProductionLineService service ;
+    private ProductionLineService service;
     private Thread thread;
     private long id;
     private String color = ""; // Machine color will be the same of current product color

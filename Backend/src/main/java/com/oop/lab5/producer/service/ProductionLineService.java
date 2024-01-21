@@ -27,7 +27,7 @@ public class ProductionLineService {
 
     public static ProductionLineService getInstance() {
         if(instance == null){
-            return new ProductionLineService();
+            instance = new ProductionLineService();
         }
         return instance;
     }
@@ -85,7 +85,6 @@ public class ProductionLineService {
     }
 
     public void autoSave() { // Make snapshot << this method should be used during simulation
-//        System.out.println("id " + this.queueID);
         for (ProductQueue q : this.queues.values())
             originator.addQueue(q);
 
