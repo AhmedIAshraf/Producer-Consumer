@@ -1,20 +1,13 @@
 package com.oop.lab5.producer.service;
 
-import ch.qos.logback.classic.encoder.JsonEncoder;
-import com.fasterxml.jackson.core.PrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.oop.lab5.producer.model.Machine;
 import com.oop.lab5.producer.model.Product;
 import com.oop.lab5.producer.model.ProductQueue;
 import com.oop.lab5.producer.snapshot.CareTaker;
 import com.oop.lab5.producer.snapshot.Memento;
 import com.oop.lab5.producer.snapshot.Originator;
-import org.apache.catalina.mapper.Mapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
-import org.json.JSONStringer;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -67,8 +60,6 @@ public class ProductionLineService {
 
     public void addQueue() {
         ProductQueue q = new ProductQueue(this.queueID);
-        //if (this.queues.isEmpty())
-        //  q.setProducts(this.products);
         this.queues.put(this.queueID++, q);
         System.out.println("qID " + this.queueID);
     }
@@ -142,17 +133,17 @@ public class ProductionLineService {
         return stepStatusJson.toString(2);
     }
 
-    public void board() {
-        System.out.println("Queues");
-        for (long i = 1; i < this.queues.size() + 1; ++i) {
-            System.out.println(queues.get(i).toString());
-        }
-
-        System.out.println("Machines");
-        for (long i = 1; i < this.machines.size() + 1; ++i) {
-            System.out.println(machines.get(i).toString());
-        }
-    }
+//    public void board() {
+//        System.out.println("Queues");
+//        for (long i = 1; i < this.queues.size() + 1; ++i) {
+//            System.out.println(queues.get(i).toString());
+//        }
+//
+//        System.out.println("Machines");
+//        for (long i = 1; i < this.machines.size() + 1; ++i) {
+//            System.out.println(machines.get(i).toString());
+//        }
+//    }
 
     public static void main(String[] args) throws InterruptedException {
         ProductionLineService service = ProductionLineService.getInstance();

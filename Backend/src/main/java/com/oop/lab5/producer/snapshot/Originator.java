@@ -1,6 +1,7 @@
 package com.oop.lab5.producer.snapshot;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.oop.lab5.producer.model.Machine;
 import com.oop.lab5.producer.model.ProductQueue;
 import org.json.JSONObject;
@@ -41,12 +42,15 @@ public class Originator {
         this.queues = memento.getQueues();
     }
 
+    @Override
     public String toString() {
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        Gson gson = gsonBuilder.create();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("colors", gson.toJson(colors));
         jsonObject.put("products", gson.toJson(queues));
 
-        return jsonObject.toString();
+        return jsonObject.toString(2);
     }
 }
