@@ -22,10 +22,9 @@ public class ProductionLineService {
     private HashMap<Long, ProductQueue> queues = new HashMap<>();
     private Queue<Product> products =  new LinkedList<>();
     private List<Thread> threads = new ArrayList<>();
-
-    private CareTaker careTaker = new CareTaker(); // apply singleton dp for best practice
-
+    private CareTaker careTaker = new CareTaker();
     private static ProductionLineService instance;
+
     private ProductionLineService() {}
 
     public static ProductionLineService getInstance() {
@@ -40,8 +39,8 @@ public class ProductionLineService {
     }
 
     public void run(){
-        careTaker.clear();
-        queues.get((long)1).setProducts(products);
+        autoSave();
+        queues.get(1L).setProducts(products);
         machines.forEach((key,value) -> threads.add(value.process()));
     }
 
@@ -56,6 +55,7 @@ public class ProductionLineService {
         queues.forEach((key, value) ->
                 products.put(new JSONObject().put("id", key).put("products", value.getProducts().size()))
         );
+
         singleStep.put("colors", colors);
         singleStep.put("products", products);
         System.out.println(singleStep.toString());
@@ -107,6 +107,7 @@ public class ProductionLineService {
     }
 
     public synchronized void autoSave() { // Make snapshot << this method should be used during simulation
+        this.careTaker.clear();
         Originator new_originator = new Originator();
 
         for (ProductQueue q : this.queues.values())
@@ -115,87 +116,85 @@ public class ProductionLineService {
         for (Machine m : this.machines.values())
             new_originator.addMachine(m);
 
+        for (Product p : this.products.stream().toList())
+            new_originator.addProduct(p);
+
         Memento memento = new_originator.saveStateToMemento();
 
         careTaker.add(memento);
-        //System.out.println("State data:");
-        //System.out.println(new_originator.toString());
     }
 
-    public String replay() {
+    public void replay() {
+        clear();
         Originator originator = new Originator();
-        int step = 0;
-        System.out.println(careTaker.size());
-        JSONObject stepStatusJson = new JSONObject();
+        originator.getStateFromMemento(this.careTaker.get());
+        this.queues = originator.getQueues();
+        this.machines = originator.getMachines();
+        this.products = originator.getProducts();
 
-        while (step < careTaker.size()) {
-            JSONArray colors = new JSONArray();
-            JSONArray qProducts = new JSONArray();
-            originator.getStateFromMemento(careTaker.get(step++));
-
-            originator.getColors().forEach((key, value) ->
-                    colors.put(new JSONObject().put("id", key).put("color", value))
-            );
-
-            originator.getQueues().forEach((key, value) ->
-                    qProducts.put(new JSONObject().put("id", key).put("products", value))
-            );
-//            System.out.println(colors.toString(2));
-//            System.out.println(qProducts.toString(2));
-            stepStatusJson.accumulate("colors", colors);
-            stepStatusJson.accumulate("products", qProducts);
-
-//            System.out.println(stepStatusJson.toString());
-        }
-
-        return stepStatusJson.toString(2);
+        System.out.println("Start Replay");
+        run();
     }
 
-//    public void board() {
-//        System.out.println("Queues");
-//        for (long i = 1; i < this.queues.size() + 1; ++i) {
-//            System.out.println(queues.get(i).toString());
+    public void clear() {
+        this.careTaker.clear();
+        this.queues.clear();
+        this.machines.clear();
+        this.products.clear();
+        this.threads.clear();
+        this.productID = 1;
+        this.queueID = 1;
+        this.machineID = 1;
+    }
+
+//    public String replay() {
+//        Originator originator = new Originator();
+//        int step = 0;
+//        System.out.println(careTaker.size());
+//        JSONObject stepStatusJson = new JSONObject();
+//
+//        while (step < careTaker.size()) {
+//            JSONArray colors = new JSONArray();
+//            JSONArray qProducts = new JSONArray();
+//            originator.getStateFromMemento(careTaker.get(step++));
+//
+//            originator.getColors().forEach((key, value) ->
+//                    colors.put(new JSONObject().put("id", key).put("color", value))
+//            );
+//
+//            originator.getQueues().forEach((key, value) ->
+//                    qProducts.put(new JSONObject().put("id", key).put("products", value))
+//            );
+//            stepStatusJson.accumulate("colors", colors);
+//            stepStatusJson.accumulate("products", qProducts);
 //        }
 //
-//        System.out.println("Machines");
-//        for (long i = 1; i < this.machines.size() + 1; ++i) {
-//            System.out.println(machines.get(i).toString());
-//        }
+//        return stepStatusJson.toString(2);
 //    }
 
-    public static void main(String[] args) throws InterruptedException {
-        ProductionLineService service = ProductionLineService.getInstance();
-        service.addMachine();
-        service.addMachine();
-        service.addQueue();
-        service.addQueue();
-        service.addProducts(5);
-
-        service.connect(1,1,false);
-        service.connect(1,2,false);
-        service.connect(1,2,true);
-        service.connect(2,2,true);
-
-        service.run();
-        Thread.sleep(10000);
-        System.out.println(service.isFinished());
-        /*if (service.isFinished()) {
-            System.out.println("Replay");
-            System.out.println(service.replay());
-        }*/
-    }
+//    public static void main(String[] args) throws InterruptedException {
+//        ProductionLineService service = ProductionLineService.getInstance();
+//        service.addMachine();
+//        service.addMachine();
+//        service.addQueue();
+//        service.addQueue();
+//        service.addProducts(5);
+//
+//        service.connect(1,1,false);
+//        service.connect(1,2,false);
+//        service.connect(1,2,true);
+//        service.connect(2,2,true);
+//
+//        service.run();
+//        Thread.sleep(10000);
+//        System.out.println(service.isFinished());
+//        /*if (service.isFinished()) {
+//            System.out.println("Replay");
+//            System.out.println(service.replay());
+//        }*/
+//    }
 }
 
 // saving steps in order to sending them to frontend
 // adding products after adding queues
-/*
-while(true) {
-    djhnvfsksdfc
-
-
-
-
-
-    autosave();
-}
- */
+// output stream not found

@@ -56,20 +56,13 @@ public class Machine implements IObservable, Runnable {
     }
 
     public void addProduct(Product product) throws InterruptedException, JsonProcessingException {
-//        System.out.println("after sending product ");
-//        service.autoSave(); // -->
         this.currentProduct = product;
         this.color = currentProduct.getColor(); // --> null pointer sometimes
-        System.out.println("after receiving product ");
-        service.autoSave(); // --
         System.out.println("classmID" + this.id);
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;
         this.color = "";
-        System.out.println("after processing product ");
-        service.autoSave(); // -->
-//        this.run();
     }
 
     public long getServiceTime() {

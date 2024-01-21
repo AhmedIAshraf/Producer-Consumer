@@ -4,22 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CareTaker {
-    private List<Memento> state = new ArrayList<Memento>();
+    private Memento state = new Memento();
 
     public void add (Memento memento) {
-        this.state.add(memento);
-    }
-
-    public int size () {
-        return this.state.size();
+        this.state = memento;
     }
 
     public void clear () {
-        this.state.clear();
+        this.state = new Memento();
     }
 
-    public Memento get (int index) {
-        return this.state.get(index);
+    public Memento get () {
+        return this.state;
     }
 }
 
