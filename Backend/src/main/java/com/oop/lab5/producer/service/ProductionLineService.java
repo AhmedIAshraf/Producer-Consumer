@@ -44,6 +44,23 @@ public class ProductionLineService {
         machines.forEach((key,value) -> threads.add(value.process()));
     }
 
+    public synchronized String sendStep (){
+        JSONObject singleStep = new JSONObject();
+        JSONArray colors = new JSONArray();
+        JSONArray products = new JSONArray();
+        machines.forEach((key, value) ->
+                colors.put(new JSONObject().put("id", key).put("color", value.getColor()))
+        );
+
+        queues.forEach((key, value) ->
+                products.put(new JSONObject().put("id", key).put("products", value.getProducts().size()))
+        );
+        singleStep.put("colors", colors);
+        singleStep.put("products", products);
+        System.out.println(singleStep.toString());
+        return singleStep.toString();
+    }
+
     public void addProducts(long number) {
         while (number > 0) {
             Product p = new Product(this.productID++);
@@ -100,8 +117,8 @@ public class ProductionLineService {
         Memento memento = new_originator.saveStateToMemento();
 
         careTaker.add(memento);
-        System.out.println("State data:");
-        System.out.println(new_originator.toString());
+        //System.out.println("State data:");
+        //System.out.println(new_originator.toString());
     }
 
     public String replay() {
@@ -161,10 +178,10 @@ public class ProductionLineService {
         service.run();
         Thread.sleep(10000);
         System.out.println(service.isFinished());
-        if (service.isFinished()) {
+        /*if (service.isFinished()) {
             System.out.println("Replay");
             System.out.println(service.replay());
-        }
+        }*/
     }
 }
 
