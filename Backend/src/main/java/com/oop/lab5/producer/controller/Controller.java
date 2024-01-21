@@ -1,5 +1,6 @@
 package com.oop.lab5.producer.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oop.lab5.producer.service.ProductionLineService;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,5 +36,8 @@ public class Controller {
 
     @GetMapping("/run")
     public void run() {service.run();}
+
+    @GetMapping("/update")
+    public String getUpdate() throws JsonProcessingException {return service.sendStep();}
 
 }
