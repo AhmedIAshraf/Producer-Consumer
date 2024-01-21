@@ -15,19 +15,15 @@ public class ProductionLineService {
     private long productID = 1;
     private long machineID = 1;
     private long queueID = 1;
-    protected HashMap<Long, Machine> machines;
-    protected HashMap<Long, ProductQueue> queues;
-    protected Queue<Product> products;
+    private HashMap<Long, Machine> machines = new HashMap<>();
+    private HashMap<Long, ProductQueue> queues = new HashMap<>();
+    private Queue<Product> products =  new LinkedList<>();
     public List<Thread> threads = new ArrayList<>();
-    public static Originator originator = new Originator(); // apply singleton dp for best practice
-    public static CareTaker careTaker = new CareTaker();  // apply singleton dp for best practice
+    public Originator originator = new Originator();// apply singleton dp for best practice
+    public CareTaker careTaker = new CareTaker(); // apply singleton dp for best practice
 
-    private static ProductionLineService instance ;
-    private ProductionLineService() {
-        this.machines = new HashMap<>();
-        this.queues = new HashMap<>();
-        this.products = new LinkedList<>();
-    }
+    private static ProductionLineService instance;
+    private ProductionLineService() {}
 
     public static ProductionLineService getInstance() {
         if(instance == null){
@@ -41,11 +37,13 @@ public class ProductionLineService {
         careTaker.clear();
         //write run logic
         //handle if there is no products in q0
-        machines.forEach((key,value) ->threads.add(value.process()));
+        machines.forEach((key,value) ->
+                threads.add(value.process())
+        );
     }
 
     public void addProducts(long number) {
-        while (number < 0) {
+        while (number > 0) {
             Product p = new Product(this.productID++);
             this.products.add(p);
             number--;
@@ -55,14 +53,15 @@ public class ProductionLineService {
     public void addMachine() {
         Machine m = new Machine(this.machineID);
         this.machines.put(this.machineID++, m);
+//        System.out.println("mID " + this.machineID);
     }
 
     public void addQueue() {
         ProductQueue q = new ProductQueue(this.queueID);
         if (this.queues.isEmpty())
             q.setProducts(this.products);
-
         this.queues.put(this.queueID++, q);
+//        System.out.println("qID " + this.queueID);
     }
 
     public void connect(long srcID, long destID, boolean isSrcMachine) {
@@ -86,6 +85,7 @@ public class ProductionLineService {
     }
 
     public void autoSave() { // Make snapshot << this method should be used during simulation
+//        System.out.println("id " + this.queueID);
         for (ProductQueue q : this.queues.values())
             originator.addQueue(q);
 
@@ -93,7 +93,8 @@ public class ProductionLineService {
             originator.addMachine(m);
 
         careTaker.add(originator.saveStateToMemento());
-
+        System.out.println("State data:");
+        System.out.println(originator.toString());
     }
 
     public String replay() {
@@ -130,27 +131,24 @@ public class ProductionLineService {
     }
 
     public static void main(String[] args) {
-       /// ProductQueue q0 = new ProductQueue(0);
-        //ProductQueue q1 = new ProductQueue(1);
-       // Machine m0 = new Machine(0);
-        //Machine m1 = new Machine(1);
+        ProductionLineService service = ProductionLineService.getInstance();
+        service.addMachine();
+        service.addMachine();
+        service.addQueue();
+        service.addQueue();
+        service.addProducts(10);
 
-        ProductionLineService service = new ProductionLineService();
-        service.addMachine();
-        service.addMachine();
-        service.addQueue();
-        service.addQueue();
         service.connect(1,1,false);
         service.connect(1,2,false);
         service.connect(1,2,true);
         service.connect(2,2,true);
-        service.addProducts(10);
+
         service.run();
     }
 }
 
 // saving steps in order to sending them to frontend
-
+// adding products after adding queues
 /*
 while(true) {
     djhnvfsksdfc

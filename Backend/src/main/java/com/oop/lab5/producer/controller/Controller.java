@@ -38,11 +38,4 @@ public class Controller {
         service.run();
     }
 
-
-
-   // @GetMapping("/finished")
-    //public boolean finished() {
-   //     return service.isFinished();
-    //}
-
 }
