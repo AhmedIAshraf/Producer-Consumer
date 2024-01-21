@@ -46,15 +46,18 @@ public class ProductQueue implements IObserver {
         this.products.add(product);
     }
 
+    public synchronized Product getProduct(){
+        return this.products.poll();
+    }
+
     @Override
     public void updateState(Machine machine) throws InterruptedException {
         // change the state of the machine to be busy and send the product to the machine
         // here will be the logic of sending the product to the machine
         if (this.products.isEmpty())
             return;
-
         machine.setState(false);
-        machine.addProduct(this.products.poll());
+        machine.addProduct(getProduct());
        // service.getInstance().autoSave();
     }
 

@@ -34,8 +34,6 @@ public class Controller {
     }
 
     @GetMapping("/run")
-    public void run() {
-        service.run();
-    }
+    public void run() {service.run();}
 
 }

@@ -56,7 +56,7 @@ public class Machine implements IObservable, Runnable {
     public void addProduct(Product product) throws InterruptedException {
         this.currentProduct = product;
         this.color = currentProduct.getColor(); // --> null pointer sometimes
-        System.out.println("mID" + this.id);
+        System.out.println("classmID" + this.id);
         service.autoSave(); // -->
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);

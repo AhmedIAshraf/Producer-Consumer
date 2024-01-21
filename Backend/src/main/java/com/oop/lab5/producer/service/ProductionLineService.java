@@ -37,9 +37,11 @@ public class ProductionLineService {
         careTaker.clear();
         //write run logic
         //handle if there is no products in q0
-        machines.forEach((key,value) ->
-                threads.add(value.process())
-        );
+        //if(queues.get(1).getProducts().isEmpty()){
+
+        //}
+        queues.get((long)1).setProducts(products);
+        machines.forEach((key,value) -> threads.add(value.process()));
     }
 
     public void addProducts(long number) {
@@ -53,15 +55,15 @@ public class ProductionLineService {
     public void addMachine() {
         Machine m = new Machine(this.machineID);
         this.machines.put(this.machineID++, m);
-//        System.out.println("mID " + this.machineID);
+       System.out.println("mID " + this.machineID);
     }
 
     public void addQueue() {
         ProductQueue q = new ProductQueue(this.queueID);
-        if (this.queues.isEmpty())
-            q.setProducts(this.products);
+        //if (this.queues.isEmpty())
+          //  q.setProducts(this.products);
         this.queues.put(this.queueID++, q);
-//        System.out.println("qID " + this.queueID);
+        System.out.println("qID " + this.queueID);
     }
 
     public void connect(long srcID, long destID, boolean isSrcMachine) {
@@ -84,7 +86,7 @@ public class ProductionLineService {
         return null;
     }
 
-    public void autoSave() { // Make snapshot << this method should be used during simulation
+    public synchronized void  autoSave() { // Make snapshot << this method should be used during simulation
         for (ProductQueue q : this.queues.values())
             originator.addQueue(q);
 
@@ -135,7 +137,7 @@ public class ProductionLineService {
         service.addMachine();
         service.addQueue();
         service.addQueue();
-        service.addProducts(10);
+        service.addProducts(5);
 
         service.connect(1,1,false);
         service.connect(1,2,false);
