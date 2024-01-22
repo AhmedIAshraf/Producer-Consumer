@@ -7,8 +7,9 @@ import java.util.Random;
 
 public class RandomColorGenerator {
     private static List<String> colors = new ArrayList<>(
-            List.of("red", "yellow", "green", "cyan", "grey", "blue", "purple", "orange", "pink", "black",
-                    "violet", "indigo", "brown", "aqua", "maroon", "navy", "beige", "crimson", "magenta", "yellowgreen")
+            List.of("#0fbabd", "#ff66bc", "#6699ff", "#988abd", "#baff1e", "#ff9966", "#ccffcc", "#6060ff", "#216c5c", "#0fbabd",
+                    "#beaded", "#ffa375", "#c0c0c0", "#eacbda", "#e6e6fa", "#ffc1f3", "#93e9be", "#ffc1f3", "#fbddda", "#0080ff",
+                    "#000080", "#FF00FF", "#800080", "#008080", "#008000", "#808080")
     );
     public static String generateRandomColor() {
         // Generate random colors without repeating
