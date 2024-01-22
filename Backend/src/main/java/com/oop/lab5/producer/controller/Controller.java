@@ -44,4 +44,7 @@ public class Controller {
     public void replay() {
         service.replay();
     }
+
+    @PostMapping("/clear")
+    public void clear() { service.clear(); }
 }
