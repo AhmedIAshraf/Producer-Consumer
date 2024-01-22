@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oop.lab5.producer.service.ProductionLineService;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("")
+@CrossOrigin("http://localhost:8081")
 @RestController
 @RequestMapping("/")
 public class Controller {
@@ -27,6 +27,7 @@ public class Controller {
     @PostMapping("/addProducts")
     public void addProduct(@RequestParam long number) {
         this.service.addProducts(number);
+        System.out.println(number);
     }
 
     @PostMapping("/connect")
@@ -40,9 +41,9 @@ public class Controller {
     @GetMapping("/update")
     public String getUpdate() throws JsonProcessingException {return service.sendStep();}
 
-    @PostMapping("/replay")
-    public void replay() {
-        service.replay();
+    @GetMapping("/replay")
+    public boolean replay() {
+        return service.replay();
     }
 
     @PostMapping("/clear")

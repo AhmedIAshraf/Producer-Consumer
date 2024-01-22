@@ -40,6 +40,7 @@ public class ProductionLineService {
 
     public void run(){
         autoSave();
+        System.out.println("NEW"+products.size());
         queues.get(1L).setProducts(new LinkedList<>(products));
         machines.forEach((key,value) -> threads.add(value.process()));
     }
@@ -70,6 +71,7 @@ public class ProductionLineService {
             this.products.add(p);
             number--;
         }
+        System.out.println("aa"+products.size());
     }
 
     public void addMachine() {
@@ -109,7 +111,8 @@ public class ProductionLineService {
     }
 
     public void autoSave() { // Make snapshot << this method should be used during simulation
-        System.out.println(this.queues.get(queueID - 1).getProducts().size());
+//        System.out.println(this.queues.get(queueID - 1).getProducts().size());
+        System.out.println(products.size()+"tf3f34f34wfrverc");
         this.snapshotDP.clear();
         Originator new_originator = new Originator();
 
@@ -122,11 +125,12 @@ public class ProductionLineService {
         Memento memento = new_originator.saveStateToMemento();
 
         this.snapshotDP.getCareTaker().add(memento);
+        System.out.println(products.size()+"trverc");
     }
 
-    public void replay() {
+    public boolean replay() {
         if (this.snapshotDP.getCareTaker().get().getProducts().isEmpty())
-            return;
+            return false;
 
         this.queues.clear();
         this.machines.clear();
@@ -142,10 +146,12 @@ public class ProductionLineService {
 
         System.out.println("Start Replay");
         run();
+        return true;
     }
 
     public void clear() {
         this.queues.clear();
+//        this.snapshotDP.clear();
         this.machines.clear();
         this.products.clear();
         this.threads.clear();
