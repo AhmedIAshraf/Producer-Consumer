@@ -34,10 +34,14 @@ public class Controller {
         service.connect(srcID, destID, isSrcMachine);
     }
 
-    @GetMapping("/run")
+    @PostMapping("/run")
     public void run() {service.run();}
 
     @GetMapping("/update")
     public String getUpdate() throws JsonProcessingException {return service.sendStep();}
 
+    @PostMapping("/replay")
+    public void replay() {
+        service.replay();
+    }
 }

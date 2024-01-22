@@ -16,15 +16,15 @@ public class Originator {
     private HashMap<Long, ProductQueue> queues = new HashMap<>(); // queues products
     private Queue<Product> products =  new LinkedList<>();
 
-    public void addMachine (Machine machine) {
-        machines.put(machine.getId(), machine);
+    public void addMachines (HashMap<Long, Machine> machines) {
+        this.machines = machines;
     }
 
-    public void addQueue (ProductQueue queue){
-        queues.put(queue.getId(), queue);
+    public void addQueues (HashMap<Long, ProductQueue> queues){
+        this.queues = queues;
     }
 
-    public void addProduct(Product product) { products.add(product); }
+    public void addProducts(Queue<Product> products) { this.products = products; }
 
     public void clear () {
         this.machines.clear();
@@ -50,18 +50,5 @@ public class Originator {
         this.machines = memento.getMachines();
         this.queues = memento.getQueues();
         this.products = memento.getProducts();
-    }
-
-    @Override
-    public String toString() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        Gson gson = gsonBuilder.create();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("colors", gson.toJson(machines));
-        jsonObject.put("queues", gson.toJson(queues));
-        jsonObject.put("products", gson.toJson(products));
-
-        return jsonObject.toString(2);
     }
 }

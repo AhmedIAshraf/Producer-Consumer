@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oop.lab5.producer.model.Machine;
 import com.oop.lab5.producer.model.Product;
 import com.oop.lab5.producer.model.ProductQueue;
-import com.oop.lab5.producer.snapshot.CareTaker;
 import com.oop.lab5.producer.snapshot.Memento;
 import com.oop.lab5.producer.snapshot.Originator;
+import com.oop.lab5.producer.snapshot.SnapshotDP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class ProductionLineService {
     private HashMap<Long, ProductQueue> queues = new HashMap<>();
     private Queue<Product> products =  new LinkedList<>();
     private List<Thread> threads = new ArrayList<>();
-    private CareTaker careTaker = new CareTaker();
+    private SnapshotDP snapshotDP = new SnapshotDP();
     private static ProductionLineService instance;
 
     private ProductionLineService() {}
@@ -40,7 +40,7 @@ public class ProductionLineService {
 
     public void run(){
         autoSave();
-        queues.get(1L).setProducts(products);
+        queues.get(1L).setProducts(new LinkedList<>(products));
         machines.forEach((key,value) -> threads.add(value.process()));
     }
 
@@ -58,6 +58,7 @@ public class ProductionLineService {
 
         singleStep.put("colors", colors);
         singleStep.put("products", products);
+
         System.out.println(singleStep.toString());
         return singleStep.toString();
     }
@@ -106,38 +107,43 @@ public class ProductionLineService {
         return outputStream().getProducts().size() == productsNo();
     }
 
-    public synchronized void autoSave() { // Make snapshot << this method should be used during simulation
-        this.careTaker.clear();
+    public void autoSave() { // Make snapshot << this method should be used during simulation
+        System.out.println(this.queues.get(queueID - 1).getProducts().size());
+        this.snapshotDP.clear();
         Originator new_originator = new Originator();
 
-        for (ProductQueue q : this.queues.values())
-            new_originator.addQueue(q);
+        new_originator.addQueues(new HashMap<>(this.queues));
 
-        for (Machine m : this.machines.values())
-            new_originator.addMachine(m);
+        new_originator.addMachines(new HashMap<>(this.machines));
 
-        for (Product p : this.products.stream().toList())
-            new_originator.addProduct(p);
+        new_originator.addProducts(new LinkedList<>(this.products));
 
         Memento memento = new_originator.saveStateToMemento();
 
-        careTaker.add(memento);
+        this.snapshotDP.getCareTaker().add(memento);
     }
 
     public void replay() {
-        clear();
+        if (this.snapshotDP.getCareTaker().get().getProducts().isEmpty())
+            return;
+
+        this.queues.clear();
+        this.machines.clear();
+        this.products.clear();
+        this.threads.clear();
+
         Originator originator = new Originator();
-        originator.getStateFromMemento(this.careTaker.get());
-        this.queues = originator.getQueues();
-        this.machines = originator.getMachines();
-        this.products = originator.getProducts();
+        originator.getStateFromMemento(this.snapshotDP.getCareTaker().get());
+        this.queues = new HashMap<>(originator.getQueues());
+        this.machines = new HashMap<>(originator.getMachines());
+        this.products = new LinkedList<>(originator.getProducts());
+        this.queues.get(queueID - 1).setProducts(new LinkedList<>());
 
         System.out.println("Start Replay");
         run();
     }
 
     public void clear() {
-        this.careTaker.clear();
         this.queues.clear();
         this.machines.clear();
         this.products.clear();
@@ -146,31 +152,6 @@ public class ProductionLineService {
         this.queueID = 1;
         this.machineID = 1;
     }
-
-//    public String replay() {
-//        Originator originator = new Originator();
-//        int step = 0;
-//        System.out.println(careTaker.size());
-//        JSONObject stepStatusJson = new JSONObject();
-//
-//        while (step < careTaker.size()) {
-//            JSONArray colors = new JSONArray();
-//            JSONArray qProducts = new JSONArray();
-//            originator.getStateFromMemento(careTaker.get(step++));
-//
-//            originator.getColors().forEach((key, value) ->
-//                    colors.put(new JSONObject().put("id", key).put("color", value))
-//            );
-//
-//            originator.getQueues().forEach((key, value) ->
-//                    qProducts.put(new JSONObject().put("id", key).put("products", value))
-//            );
-//            stepStatusJson.accumulate("colors", colors);
-//            stepStatusJson.accumulate("products", qProducts);
-//        }
-//
-//        return stepStatusJson.toString(2);
-//    }
 
 //    public static void main(String[] args) throws InterruptedException {
 //        ProductionLineService service = ProductionLineService.getInstance();

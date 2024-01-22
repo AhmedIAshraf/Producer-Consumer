@@ -11,7 +11,7 @@ public class CareTaker {
     }
 
     public void clear () {
-        this.state = new Memento();
+        this.state = null;
     }
 
     public Memento get () {

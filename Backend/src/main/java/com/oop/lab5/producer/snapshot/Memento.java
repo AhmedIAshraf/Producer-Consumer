@@ -30,6 +30,6 @@ public class Memento {
     }
 
     public Queue<Product> getProducts() {
-        return products;
+        return this.products;
     }
 }

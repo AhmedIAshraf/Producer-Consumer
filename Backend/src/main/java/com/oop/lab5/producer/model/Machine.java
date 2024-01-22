@@ -57,8 +57,8 @@ public class Machine implements IObservable, Runnable {
 
     public void addProduct(Product product) throws InterruptedException, JsonProcessingException {
         this.currentProduct = product;
-        this.color = currentProduct.getColor(); // --> null pointer sometimes
-        System.out.println("classmID" + this.id);
+        this.color = currentProduct.getColor();
+//        System.out.println("classmID" + this.id);
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;
@@ -99,18 +99,22 @@ public class Machine implements IObservable, Runnable {
     }
 
     public Thread process() {
-        Thread thread = new Thread(this);
+        thread = new Thread(this);
         thread.start(); // call run
         return thread;
+    }
+
+    public void stop() {
+        this.thread.stop();
     }
 
     @Override
     public void run() {
         while (true) {
-            if (service.outputStream().getProducts().size() == service.productsNo())
+            if (service.outputStream().getProducts().size() == service.productsNo()) {
+                stop();
                 break;
-//            System.out.println("size");
-//            System.out.println(service.productsNo());
+            }
             this.state = true;
             try {
                 this.notifyQueues();
