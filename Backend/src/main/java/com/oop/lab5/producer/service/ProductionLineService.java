@@ -58,7 +58,8 @@ public class ProductionLineService {
 
         singleStep.put("colors", colors);
         singleStep.put("products", products);
-
+        singleStep.put("isFinished", isFinished());
+        
         System.out.println(singleStep.toString());
         return singleStep.toString();
     }
