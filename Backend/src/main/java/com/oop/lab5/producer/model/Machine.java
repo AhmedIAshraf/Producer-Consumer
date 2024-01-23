@@ -38,7 +38,7 @@ public class Machine implements IObservable, Runnable {
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;
-        this.color = "#12cc7cذ";
+        this.color = "#12cc7c";
     }
 
     public void setDestQueue(ProductQueue destQueue) {
