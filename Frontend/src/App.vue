@@ -1,5 +1,4 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <Interface/>
 </template>
 
@@ -21,6 +20,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  background-color:rgb(248, 248, 248);
+  margin: 0px;
+  padding: 0px;
+  min-width: 800px;
+  max-height: 100%;
 }
 </style>

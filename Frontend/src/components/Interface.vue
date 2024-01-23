@@ -1,16 +1,21 @@
 <template>
-    <div ref="tools">
-        <button @click="Add('machine')">Machine</button>
-        <button @click="Add('queue')">Queues</button>
-        <button @click="select">Select</button>
-        <button @click="Link">Link</button>
-        <button @click="Clear">Clear</button>
-        <input type="number" min="1" value="10" ref="products">
-        <button @click="run('run')">Run</button>
-        <button @click="run('replay')">Replay</button>
-
-    </div>
-    <div ref="container" @click="coordinates"></div>
+        <div ref="tools" id="bar">
+            <div class="tools" style="justify-content: left">
+                <button class="button" @click="Add('machine')">Machine</button>
+                <button class="button" @click="Add('queue')">Queue</button>
+            </div>
+            <div class="tools">
+                <button class="button" @click="select" ref="mouse">Select</button>
+                <button class="button" @click="Link" ref="link">Link</button>
+                <button class="button" @click="Clear">Clear</button>
+            </div>
+            <div class="tools" style="justify-content: right">
+                <input  type="number" min="1" value="10" ref="products">
+                <button class="button" @click="run('run')" ref="run">Run</button>
+                <button class="button" @click="run('replay')" ref="replay">Replay</button>
+            </div>
+        </div>
+        <div ref="container" @click="coordinates" id="container"></div>
 </template>
 
 <script>
@@ -31,9 +36,7 @@ export default {
             Qindex : 0,
             Mindex : 0,
             Aindex : 0,
-            isPosted: [true],
             url : 'http://localhost:8080/',
-            isposted: true,
             link : false,
             finished : true
         }
@@ -91,6 +94,8 @@ export default {
                 this.layer.children= this.layer.children.slice(0,this.layer.children.length-1)
                 this.isDrawing = false
             }
+            this.$refs.mouse.style.background="yellow"
+            this.$refs.link.style.background="#12cc7c"
         },
         select(){
             this.noArrows()
@@ -104,6 +109,8 @@ export default {
         },
         Link(e){
             this.noArrows()
+            this.$refs.link.style.background="yellow"
+            this.$refs.mouse.style.background="#12cc7c"
             for (var i=0;i<this.machines.length;i++) this.machines[i].draggable(false)
             for (var i=0;i<this.queues.length;i++) this.queues[i].draggable(false)
             this.link = true
@@ -122,8 +129,6 @@ export default {
                 this.arrow.points([e.target.parent.x()+25,e.target.parent.y()+25])
             }
             this.arrowSource = [this.arrow.points()[0],this.arrow.points()[1],e.target.parent.children[0].name(),e.target]
-            // e.target.parent.add(toRaw(this.arrow))
-            // this.layer.batchDraw()
             this.layer.add(toRaw(this.arrow)).batchDraw()
         },
         async ContinueArrow(e){
@@ -143,10 +148,6 @@ export default {
             this.arrow.points()[2] = e.target.parent.getX()-newX
             this.arrow.points()[3] = e.target.parent.getY()-newY
             this.arrowsList.push(this.arrow)
-            // e.target.parent.add(toRaw(this.arrow))
-            // this.layer.add(toRaw(this.arrow))
-            // this.layer.add(e.target.parent).batchDraw()
-            // this.layer.children= this.layer.children.slice(0,this.layer.children.length-1)
             this.layer.batchDraw()
             this.isDrawing = false
             let machine = this.arrowSource[2]=='machine'? true : false
@@ -203,26 +204,41 @@ export default {
             const response = axios.post(this.url+'clear')
         },
         async run(type){
+            this.$refs.link.style.background="#12cc7c"
+            this.$refs.mouse.style.background="#12cc7c"
             if (type=='run'){
                 let productsNumber = this.$refs.products.value
-                if (productsNumber<1) alert("Number of Products Must be Greater than 0")
+                if (productsNumber<1) alert("Number of Products Must be between 1 and 100")
+                else if (productsNumber>100) ("Number of Products Must be between 1 and 100")
                 else {
+                    // this.$refs.run.style.background="yellow"
                     const request = await axios.post(this.url+'addProducts?number='+productsNumber)
                     const response = await axios.post(this.url+'run')
                     this.finished = false
                     setInterval(() => {
-                        if (!this.finished) this.Perform()
+                        if (!this.finished) {
+                            this.Perform()
+                            // this.$refs.run.style.background="yellow"
+                        }
+                        // else this.$refs.run.style.background="#12cc7c"
                     },500)
                 }
+                // this.$refs.run.style.background="#12cc7c"
             }
             else{
+                // this.$refs.replay.style.background="yellow"
                 const response = await axios.get(this.url+'replay')
                 if (response.data){
                     this.finished = false
                     setInterval(() => {
-                        if (!this.finished) this.Perform()
+                        if (!this.finished) {
+                            this.Perform()
+                            // this.$refs.replay.style.background="yellow"
+                        }
+                        // else this.$refs.replay.style.background="#12cc7c"
                     },500)
                 }
+                // this.$refs.replay.style.background="#12cc7c"
             }
         },
         async Perform(){
@@ -283,18 +299,43 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    h3 {
-    margin: 40px 0 0;
+    #container{
+        background-color: white;
+        filter: blur(0px);
+        box-shadow: 0.5px 0.5px 5px 3px rgb(135, 135, 135) ;
+        width: 98%;
+        height: 80%;
+        margin: 0px 1%;
     }
-    ul {
-    list-style-type: none;
-    padding: 0;
+    #bar{
+        width: 98%;
+        margin: 0px 1%;
+        margin-bottom: 7px;
+        margin-top: 5px;
+        padding: 3px 0px;
     }
-    li {
-    display: inline-block;
-    margin: 0 10px;
+    .button{
+        margin: 3px;
+        background-color: #12cc7c;
+        border: 0.5px rgb(99, 99, 99) solid;
+        /* width: 7%; */
+        width: 23%;
+        height: 45px;
+        font-family: monospace;
+        font-weight: bold;
+        font-size: 16px;
+        border-radius: 5px;
     }
-    a {
-    color: #42b983;
+    .button:hover{
+        background-color:#80e6ba;
+    }
+    .tools{
+        display:inline-flex;
+        width: 33.3333%;
+    }
+    input{
+        /* padding: 15px 0px 0px 0px; */
+        border-radius: 4px;
+        /* height: 25px; */
     }
 </style>
