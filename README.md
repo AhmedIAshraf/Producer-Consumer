@@ -43,3 +43,7 @@ An assembly line that produces different products consists of various processing
 ![Producer Consumer - Machine and Queue Configuration](https://github.com/Saifullah-1/Producer-Consumer/blob/master/Producer.jpg)
 
 ![Producer Consumer - Test Case](https://github.com/Saifullah-1/Producer-Consumer/blob/master/Test_case.jpg)
+
+### Class Diagram
+
+![Producer Consumer - Test Case](https://github.com/Saifullah-1/Producer-Consumer/blob/master/UML.png)
