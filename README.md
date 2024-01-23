@@ -38,13 +38,13 @@ An assembly line that produces different products consists of various processing
 8. **Queue Overflow Handling:**
    - Queues do not overflow for simplicity in simulation.
 
-### Visual Representation
+## Visual Representation
 
 ![Producer Consumer - Machine and Queue Configuration](https://github.com/Saifullah-1/Producer-Consumer/blob/master/Producer.jpg)
 
 ![Producer Consumer - Test Case](https://github.com/Saifullah-1/Producer-Consumer/blob/master/Test_case.jpg)
 
-### Class Diagram
+## Class Diagram
 
 ![Producer Consumer - Test Case](https://github.com/Saifullah-1/Producer-Consumer/blob/master/UML.png)
 
