@@ -12,6 +12,6 @@ public class SnapshotDP {
     }
 
     public void clear() {
-        this.careTaker.clear();
+        this.careTaker.clearMemento();
     }
 }

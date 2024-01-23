@@ -15,17 +15,17 @@ public class Memento {
 
     public Memento() {}
 
-    public Memento (HashMap<Long, Machine> machines, HashMap<Long, ProductQueue> queues, Queue<Product> products){
-        this.machines = machines;
-        this.queues = queues;
-        this.products = products;
+    public Memento(HashMap<Long, Machine> machinesState, HashMap<Long, ProductQueue> queuesState, Queue<Product> productsState) {
+        this.machines = machinesState;
+        this.queues = queuesState;
+        this.products = productsState;
     }
 
-    public HashMap<Long, Machine> getMachines () {
+    public HashMap<Long, Machine> getMachines() {
         return this.machines;
     }
 
-    public HashMap<Long, ProductQueue> getQueues () {
+    public HashMap<Long, ProductQueue> getQueues() {
         return this.queues;
     }
 

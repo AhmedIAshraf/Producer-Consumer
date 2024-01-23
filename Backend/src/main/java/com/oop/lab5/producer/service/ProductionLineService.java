@@ -1,6 +1,5 @@
 package com.oop.lab5.producer.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oop.lab5.producer.model.Machine;
 import com.oop.lab5.producer.model.Product;
 import com.oop.lab5.producer.model.ProductQueue;
@@ -21,8 +20,8 @@ public class ProductionLineService {
     private HashMap<Long, Machine> machines = new HashMap<>();
     private HashMap<Long, ProductQueue> queues = new HashMap<>();
     private Queue<Product> products =  new LinkedList<>();
-    private List<Thread> threads = new ArrayList<>();
-    private SnapshotDP snapshotDP = new SnapshotDP();
+    private final List<Thread> threads = new ArrayList<>();
+    private final SnapshotDP snapshotDP = new SnapshotDP();
     private static ProductionLineService instance;
 
     private ProductionLineService() {}
@@ -40,12 +39,11 @@ public class ProductionLineService {
 
     public void run(){
         autoSave();
-        System.out.println("NEW"+products.size());
         queues.get(1L).setProducts(new LinkedList<>(products));
         machines.forEach((key,value) -> threads.add(value.process()));
     }
 
-    public synchronized String sendStep() throws JsonProcessingException {
+    public synchronized String sendStep() {
         JSONObject singleStep = new JSONObject();
         JSONArray colors = new JSONArray();
         JSONArray products = new JSONArray();
@@ -60,7 +58,12 @@ public class ProductionLineService {
         singleStep.put("colors", colors);
         singleStep.put("products", products);
         singleStep.put("isFinished", isFinished());
-        
+
+        if (isFinished()) { // stopping the threads
+            for (Machine m : this.machines.values())
+                m.stop();
+        }
+
         System.out.println(singleStep.toString());
         return singleStep.toString();
     }
@@ -111,9 +114,8 @@ public class ProductionLineService {
     }
 
     public void autoSave() { // Make snapshot << this method should be used during simulation
-//        System.out.println(this.queues.get(queueID - 1).getProducts().size());
-        System.out.println(products.size()+"tf3f34f34wfrverc");
         this.snapshotDP.clear();
+
         Originator new_originator = new Originator();
 
         new_originator.addQueues(new HashMap<>(this.queues));
@@ -124,12 +126,11 @@ public class ProductionLineService {
 
         Memento memento = new_originator.saveStateToMemento();
 
-        this.snapshotDP.getCareTaker().add(memento);
-        System.out.println(products.size()+"trverc");
+        this.snapshotDP.getCareTaker().addMemento(memento);
     }
 
     public boolean replay() {
-        if (this.snapshotDP.getCareTaker().get().getProducts().isEmpty())
+        if (this.snapshotDP.getCareTaker().getCurrentMemento().getProducts().isEmpty())
             return false;
 
         this.queues.clear();
@@ -138,7 +139,7 @@ public class ProductionLineService {
         this.threads.clear();
 
         Originator originator = new Originator();
-        originator.getStateFromMemento(this.snapshotDP.getCareTaker().get());
+        originator.getStateFromMemento(this.snapshotDP.getCareTaker().getCurrentMemento());
         this.queues = new HashMap<>(originator.getQueues());
         this.machines = new HashMap<>(originator.getMachines());
         this.products = new LinkedList<>(originator.getProducts());
@@ -159,28 +160,6 @@ public class ProductionLineService {
         this.queueID = 1;
         this.machineID = 1;
     }
-
-//    public static void main(String[] args) throws InterruptedException {
-//        ProductionLineService service = ProductionLineService.getInstance();
-//        service.addMachine();
-//        service.addMachine();
-//        service.addQueue();
-//        service.addQueue();
-//        service.addProducts(5);
-//
-//        service.connect(1,1,false);
-//        service.connect(1,2,false);
-//        service.connect(1,2,true);
-//        service.connect(2,2,true);
-//
-//        service.run();
-//        Thread.sleep(10000);
-//        System.out.println(service.isFinished());
-//        /*if (service.isFinished()) {
-//            System.out.println("Replay");
-//            System.out.println(service.replay());
-//        }*/
-//    }
 }
 
 // saving steps in order to sending them to frontend

@@ -2,17 +2,16 @@ package com.oop.lab5.producer.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oop.lab5.producer.service.ProductionLineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("http://localhost:8081")
 @RestController
 @RequestMapping("/")
 public class Controller {
-    private ProductionLineService service;
-
-    public Controller(ProductionLineService service) {
-        this.service = ProductionLineService.getInstance();
-    }
+    @Autowired
+    private ProductionLineService service = ProductionLineService.getInstance();
 
     // We will start with adding a machine and a queue
     @PostMapping("/addItem")
@@ -23,6 +22,7 @@ public class Controller {
             service.addQueue();
         }
     }
+
 
     @PostMapping("/addProducts")
     public void addProduct(@RequestParam long number) {
@@ -42,8 +42,9 @@ public class Controller {
     public String getUpdate() throws JsonProcessingException {return service.sendStep();}
 
     @GetMapping("/replay")
-    public boolean replay() {
-        return service.replay();
+    public ResponseEntity<Boolean> replay() {
+        boolean success = service.replay();
+        return ResponseEntity.ok(success);
     }
 
     @PostMapping("/clear")

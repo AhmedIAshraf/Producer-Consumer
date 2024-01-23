@@ -16,39 +16,46 @@ public class Originator {
     private HashMap<Long, ProductQueue> queues = new HashMap<>(); // queues products
     private Queue<Product> products =  new LinkedList<>();
 
-    public void addMachines (HashMap<Long, Machine> machines) {
+    public Originator(HashMap<Long, Machine> machines, HashMap<Long, ProductQueue> queues, Queue<Product> products) {
         this.machines = machines;
-    }
-
-    public void addQueues (HashMap<Long, ProductQueue> queues){
         this.queues = queues;
+        this.products = products;
     }
 
-    public void addProducts(Queue<Product> products) { this.products = products; }
+    public Originator() {}
 
-    public void clear () {
-        this.machines.clear();
-        this.queues.clear();
-        this.products.clear();
-    }
-
-    public HashMap<Long, Machine> getMachines () {
+    public HashMap<Long, Machine> getMachines() {
         return this.machines;
     }
 
-    public HashMap<Long, ProductQueue> getQueues () {
+    public HashMap<Long, ProductQueue> getQueues() {
         return this.queues;
     }
 
-    public Queue<Product> getProducts() { return this.products; }
+    public Queue<Product> getProducts() {
+        return this.products;
+    }
 
-    public Memento saveStateToMemento () {
+    public Memento saveStateToMemento() {
         return new Memento(this.machines, this.queues, this.products);
     }
 
-    public void getStateFromMemento (Memento memento) {
+    public void getStateFromMemento(Memento memento) {
         this.machines = memento.getMachines();
         this.queues = memento.getQueues();
         this.products = memento.getProducts();
     }
+
+    public void addQueues(HashMap<Long, ProductQueue> queues) {
+        this.queues = queues;
+    }
+
+    public void addMachines(HashMap<Long, Machine> machines) {
+        this.machines = machines;
+    }
+
+    public void addProducts(LinkedList<Product> products) {
+        this.products = products;
+    }
 }
+

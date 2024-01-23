@@ -9,76 +9,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Machine implements IObservable, Runnable {
-    private ProductionLineService service;
-    private Thread thread;
-    private long id;
-    private String color = ""; // Machine color will be the same of current product color
+    private final long id;
+    private String color = "#12cc7c"; // Machine color will be the same of current product color
     private boolean state = true; // indicates whether the machine is busy or not
     private Product currentProduct;
-    private long serviceTime;  // will be generated randomly in this class
-    private List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
+    private final long serviceTime;  // will be generated randomly in this class
+    private final List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
     private ProductQueue destQueue;
+    private volatile boolean isRunning = true;
 
     public Machine(long id) {
         this.id = id;
-        this.serviceTime = (long) (Math.random() * 10) + 1; // creating random rate !!will be changed!!
-        this.serviceTime = 1;
-        this.service = ProductionLineService.getInstance();
+        this.serviceTime = (long) (Math.random() * 30) + 1; // creating random rate !!will be changed!!
         System.out.println("Service time " + serviceTime);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getColor() {
         return color;
     }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public boolean isState() {
-        return state;
-    }
-
     public void setState(boolean state) {
         this.state = state;
-    }
-
-    public Product getCurrentProduct() {
-        return currentProduct;
     }
 
     public void addProduct(Product product) throws InterruptedException, JsonProcessingException {
         this.currentProduct = product;
         this.color = currentProduct.getColor();
-//        System.out.println("classmID" + this.id);
         Thread.sleep(this.serviceTime * 1000);
         this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;
-        this.color = "";
-    }
-
-    public long getServiceTime() {
-        return serviceTime;
-    }
-
-    public List<ProductQueue> getConnectedQueues() {
-        return connectedQueues;
-    }
-
-    public void setConnectedQueues(List<ProductQueue> connectedQueues) {
-        this.connectedQueues = connectedQueues;
-    }
-
-    public ProductQueue getDestQueue() {
-        return destQueue;
+        this.color = "#12cc7cذ";
     }
 
     public void setDestQueue(ProductQueue destQueue) {
@@ -99,22 +59,18 @@ public class Machine implements IObservable, Runnable {
     }
 
     public Thread process() {
-        thread = new Thread(this);
+        Thread thread = new Thread(this);
         thread.start(); // call run
         return thread;
     }
 
     public void stop() {
-        this.thread.stop();
+        this.isRunning = false;
     }
 
     @Override
     public void run() {
-        while (true) {
-            if (service.outputStream().getProducts().size() == service.productsNo()) {
-                stop();
-                break;
-            }
+        while (isRunning) {
             this.state = true;
             try {
                 this.notifyQueues();

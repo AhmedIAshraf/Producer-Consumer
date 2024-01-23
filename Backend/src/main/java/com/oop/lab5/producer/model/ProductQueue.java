@@ -11,24 +11,16 @@ import java.util.List;
 import java.util.Queue;
 
 public class ProductQueue implements IObserver {
-    private long id;
-    private List<Machine> connectedMachines = new ArrayList<>(); // destination Machines
+    private final long id;
+    private final List<Machine> connectedMachines = new ArrayList<>(); // destination Machines
     private Queue<Product> products = new LinkedList<>();
 
     public ProductQueue(long id) {
         this.id = id;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public List<Machine> getConnectedMachines() {
-        return connectedMachines;
+        return new ArrayList<>(connectedMachines);
     }
 
     public void connectToMachine(Machine machine) {
@@ -40,7 +32,7 @@ public class ProductQueue implements IObserver {
     }
 
     public Queue<Product> getProducts() {
-        return products;
+        return new LinkedList<>(products);
     }
 
     public synchronized void addProduct(Product product) {
@@ -59,7 +51,6 @@ public class ProductQueue implements IObserver {
             return;
         machine.setState(false);
         machine.addProduct(getProduct());
-        // service.getInstance().autoSave();
     }
 
     @Override
@@ -68,7 +59,6 @@ public class ProductQueue implements IObserver {
         json.put("id", id);
         json.put("connectedM", connectedMachines);
         json.put("products", products);
-        json.put("id", id);
 
         return json.toString();
     }
