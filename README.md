@@ -47,3 +47,6 @@ An assembly line that produces different products consists of various processing
 ### Class Diagram
 
 ![Producer Consumer - Test Case](https://github.com/Saifullah-1/Producer-Consumer/blob/master/UML.png)
+
+## [Link to Report](https://github.com/Saifullah-1/Producer-Consumer/blob/master/ProducerConsumerReport.pdf)
+
