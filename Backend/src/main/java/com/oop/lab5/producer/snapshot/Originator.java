@@ -12,11 +12,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Originator {
-    private HashMap<Long, Machine> machines = new HashMap<>(); // Machines colors
-    private HashMap<Long, ProductQueue> queues = new HashMap<>(); // queues products
+    private HashMap<Integer, Machine> machines = new HashMap<>(); // Machines colors
+    private HashMap<Integer, ProductQueue> queues = new HashMap<>(); // queues products
     private Queue<Product> products =  new LinkedList<>();
 
-    public Originator(HashMap<Long, Machine> machines, HashMap<Long, ProductQueue> queues, Queue<Product> products) {
+    public Originator(HashMap<Integer, Machine> machines, HashMap<Integer, ProductQueue> queues, Queue<Product> products) {
         this.machines = machines;
         this.queues = queues;
         this.products = products;
@@ -24,11 +24,11 @@ public class Originator {
 
     public Originator() {}
 
-    public HashMap<Long, Machine> getMachines() {
+    public HashMap<Integer, Machine> getMachines() {
         return this.machines;
     }
 
-    public HashMap<Long, ProductQueue> getQueues() {
+    public HashMap<Integer, ProductQueue> getQueues() {
         return this.queues;
     }
 
@@ -46,11 +46,11 @@ public class Originator {
         this.products = memento.getProducts();
     }
 
-    public void addQueues(HashMap<Long, ProductQueue> queues) {
+    public void addQueues(HashMap<Integer, ProductQueue> queues) {
         this.queues = queues;
     }
 
-    public void addMachines(HashMap<Long, Machine> machines) {
+    public void addMachines(HashMap<Integer, Machine> machines) {
         this.machines = machines;
     }
 

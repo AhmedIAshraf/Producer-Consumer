@@ -11,7 +11,7 @@ public class CareTaker {
     }
 
     public void clearMemento() {
-        this.currentMemento = null;
+        this.currentMemento = new Memento();
     }
 
     public Memento getCurrentMemento() {

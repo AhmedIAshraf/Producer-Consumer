@@ -14,11 +14,11 @@ import java.util.*;
 
 @Service
 public class ProductionLineService {
-    private long productID = 1;
-    private long machineID = 1;
-    private long queueID = 1;
-    private HashMap<Long, Machine> machines = new HashMap<>();
-    private HashMap<Long, ProductQueue> queues = new HashMap<>();
+    private int productID = 1;
+    private int machineID = 1;
+    private int queueID = 1;
+    private HashMap<Integer, Machine> machines = new HashMap<>();
+    private HashMap<Integer, ProductQueue> queues = new HashMap<>();
     private Queue<Product> products =  new LinkedList<>();
     private final List<Thread> threads = new ArrayList<>();
     private final SnapshotDP snapshotDP = new SnapshotDP();
@@ -33,13 +33,14 @@ public class ProductionLineService {
         return instance;
     }
 
-    public long productsNo() {
+    public int productsNo() {
         return (this.productID - 1);
     }
 
-    public void run(){
+    public void run() {
+        this.snapshotDP.clear();
         autoSave();
-        queues.get(1L).setProducts(new LinkedList<>(products));
+        queues.get(1).setProducts(new LinkedList<>(products));
         machines.forEach((key,value) -> threads.add(value.process()));
     }
 
@@ -74,7 +75,6 @@ public class ProductionLineService {
             this.products.add(p);
             number--;
         }
-        System.out.println("aa"+products.size());
     }
 
     public void addMachine() {
@@ -89,7 +89,7 @@ public class ProductionLineService {
         System.out.println("qID " + this.queueID);
     }
 
-    public void connect(long srcID, long destID, boolean isSrcMachine) {
+    public void connect(int srcID, int destID, boolean isSrcMachine) {
         if (isSrcMachine) {
             Machine srcM = this.machines.get(srcID);
             ProductQueue destQ = this.queues.get(destID);
@@ -117,33 +117,37 @@ public class ProductionLineService {
         this.snapshotDP.clear();
 
         Originator new_originator = new Originator();
-
         new_originator.addQueues(new HashMap<>(this.queues));
-
         new_originator.addMachines(new HashMap<>(this.machines));
-
         new_originator.addProducts(new LinkedList<>(this.products));
 
         Memento memento = new_originator.saveStateToMemento();
-
         this.snapshotDP.getCareTaker().addMemento(memento);
     }
 
     public boolean replay() {
+        if (this.snapshotDP.getCareTaker().getCurrentMemento() == null)
+            return false;
+
+        System.out.println("condition 1 passed");
+
         if (this.snapshotDP.getCareTaker().getCurrentMemento().getProducts().isEmpty())
             return false;
 
-        this.queues.clear();
-        this.machines.clear();
-        this.products.clear();
-        this.threads.clear();
+        System.out.println("condition 2 passed");
 
+        clear();
         Originator originator = new Originator();
         originator.getStateFromMemento(this.snapshotDP.getCareTaker().getCurrentMemento());
         this.queues = new HashMap<>(originator.getQueues());
+        this.queueID = this.queues.size() + 1;
         this.machines = new HashMap<>(originator.getMachines());
+        this.machineID = this.machines.size() + 1;
         this.products = new LinkedList<>(originator.getProducts());
-        this.queues.get(queueID - 1).setProducts(new LinkedList<>());
+        this.productID = this.products.size() + 1;
+        this.queues.forEach((key, value) ->
+                value.setProducts(new LinkedList<>())
+        );
 
         System.out.println("Start Replay");
         run();
@@ -152,7 +156,6 @@ public class ProductionLineService {
 
     public void clear() {
         this.queues.clear();
-//        this.snapshotDP.clear();
         this.machines.clear();
         this.products.clear();
         this.threads.clear();
@@ -161,7 +164,3 @@ public class ProductionLineService {
         this.machineID = 1;
     }
 }
-
-// saving steps in order to sending them to frontend
-// adding products after adding queues
-// output stream not found

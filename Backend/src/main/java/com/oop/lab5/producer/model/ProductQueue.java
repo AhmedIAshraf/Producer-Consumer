@@ -11,19 +11,11 @@ import java.util.List;
 import java.util.Queue;
 
 public class ProductQueue implements IObserver {
-    private long id;
+    private int id;
     private final List<Machine> connectedMachines = new ArrayList<>(); // destination Machines
     private Queue<Product> products = new LinkedList<>();
 
-    public ProductQueue(long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
+    public ProductQueue(int id) {
         this.id = id;
     }
 

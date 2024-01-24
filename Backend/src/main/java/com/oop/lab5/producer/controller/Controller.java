@@ -25,13 +25,12 @@ public class Controller {
 
 
     @PostMapping("/addProducts")
-    public void addProduct(@RequestParam long number) {
+    public void addProduct(@RequestParam int number) {
         this.service.addProducts(number);
-        System.out.println(number);
     }
 
     @PostMapping("/connect")
-    public void connect(@RequestParam long srcID, @RequestParam long destID, @RequestParam boolean isSrcMachine) {
+    public void connect(@RequestParam int srcID, @RequestParam int destID, @RequestParam boolean isSrcMachine) {
         service.connect(srcID, destID, isSrcMachine);
     }
 
