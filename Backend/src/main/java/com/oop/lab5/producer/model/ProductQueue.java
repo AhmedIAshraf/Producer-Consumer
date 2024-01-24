@@ -11,11 +11,19 @@ import java.util.List;
 import java.util.Queue;
 
 public class ProductQueue implements IObserver {
-    private final long id;
+    private long id;
     private final List<Machine> connectedMachines = new ArrayList<>(); // destination Machines
     private Queue<Product> products = new LinkedList<>();
 
     public ProductQueue(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -50,7 +58,12 @@ public class ProductQueue implements IObserver {
         if (this.products.isEmpty())
             return;
         machine.setState(false);
-        machine.addProduct(getProduct());
+        Product p = getProduct();
+        if(p != null){
+
+            System.out.println("notify from "+machine.getId());
+            machine.addProduct(p);
+        }
     }
 
     @Override

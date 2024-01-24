@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Machine implements IObservable, Runnable {
-    private final long id;
+    private long id;
     private String color = "#12cc7c"; // Machine color will be the same of current product color
     private boolean state = true; // indicates whether the machine is busy or not
     private Product currentProduct;
     private final long serviceTime;  // will be generated randomly in this class
-    private final List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
+    private List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
     private ProductQueue destQueue;
     private volatile boolean isRunning = true;
 
@@ -24,12 +24,32 @@ public class Machine implements IObservable, Runnable {
         System.out.println("Service time " + serviceTime);
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getColor() {
         return color;
     }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    public Product getCurrentProduct() {
+        return currentProduct;
     }
 
     public void addProduct(Product product) throws InterruptedException, JsonProcessingException {
@@ -39,6 +59,22 @@ public class Machine implements IObservable, Runnable {
         this.destQueue.addProduct(this.currentProduct);
         this.currentProduct = null;
         this.color = "#12cc7c";
+    }
+
+    public long getServiceTime() {
+        return serviceTime;
+    }
+
+    public List<ProductQueue> getConnectedQueues() {
+        return new ArrayList<>(connectedQueues);
+    }
+
+    public void setConnectedQueues(List<ProductQueue> connectedQueues) {
+        this.connectedQueues = connectedQueues;
+    }
+
+    public ProductQueue getDestQueue() {
+        return destQueue;
     }
 
     public void setDestQueue(ProductQueue destQueue) {
