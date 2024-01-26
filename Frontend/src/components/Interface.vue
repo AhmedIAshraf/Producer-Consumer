@@ -257,8 +257,8 @@ export default {
                 let product = data.products[i].products
                 console.log(this.queues[id-1].children[1].text())
                 let len = this.queues[id-1].children[1].text().length
-                let txt = this.queues[id-1].children[1].text().slice(0,len-1).concat(product)
-                this.queues[id-1].children[1].text(txt)
+                let textNode = this.queues[id-1].children[1];
+                textNode.text(textNode.text().slice(0,len-1).concat(product));
             }
         }
     },

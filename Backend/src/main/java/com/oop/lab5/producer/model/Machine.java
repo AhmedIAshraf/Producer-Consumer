@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Machine implements IObservable, Runnable {
-    private int id;
+    private final int id;
     private String color = "#12cc7c"; // Machine color will be the same of current product color
     private boolean state = true; // indicates whether the machine is busy or not
     private Product currentProduct;
     private final int serviceTime;  // will be generated randomly in this class
-    private List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
+    private final List<ProductQueue> connectedQueues = new ArrayList<>(); // Queues which supply the machine with products <which are observers>
     private ProductQueue destQueue;
     private volatile boolean isRunning = true;
 
