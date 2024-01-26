@@ -40,7 +40,7 @@ An assembly line that produces different products consists of various processing
 
 ## Visual Representation
 
-[![Video](https://github.com/Saifullah-1/Producer-Consumer/blob/master/Test_case.jpg)](https://youtu.be/sH7EUyh7pes)
+[Video](https://youtu.be/sH7EUyh7pes)
 
 ![Producer Consumer - Machine and Queue Configuration](https://github.com/Saifullah-1/Producer-Consumer/blob/master/Producer.jpg)
 
