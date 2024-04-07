@@ -14,6 +14,7 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,6 +25,7 @@ export default {
   margin: 0px;
   padding: 0px;
   min-width: 800px;
-  max-height: 100%;
+  min-height: 85%;
+  /* background-image: linear-gradient(yellow,green); */
 }
 </style>

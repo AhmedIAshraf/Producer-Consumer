@@ -1,5 +1,5 @@
 <template>
-        <div ref="tools" id="bar">
+        <div ref="tools" id="bar" @load="Clear">
             <div class="tools" style="justify-content: left">
                 <button class="button" @click="Add('machine')">Machine</button>
                 <button class="button" @click="Add('queue')">Queue</button>
@@ -38,12 +38,14 @@ export default {
             Aindex : 0,
             url : 'http://localhost:8080/',
             link : false,
-            finished : true
+            finished : true,
         }
     },
     methods:{
         Add(type){
             this.noArrows()
+            this.select()
+            this.mark('select')
             let item
             let Group = new Konva.Group({
                 x : 550,
@@ -85,20 +87,36 @@ export default {
             Group.id(item.id())
             Group.add(item).add(text)
             this.layer.add(Group).batchDraw();
-            this.select()
             let machine = type=='machine'? true : false
             const response = axios.post(this.url+'addItem?isMachine='+machine)
+        },
+        zeroQueues(){
+            for (var i=0;i<this.queues.length;i++){
+                let len = this.queues[i].children[1].text().length
+                let txt = this.queues[i].children[1].text().slice(0,len-1).concat('0')
+                this.queues[i].children[1].text(txt)
+            }
+            this.$refs.run.disabled = false
         },
         noArrows(){
             if (this.isDrawing){
                 this.layer.children= this.layer.children.slice(0,this.layer.children.length-1)
                 this.isDrawing = false
             }
-            this.$refs.mouse.style.background="yellow"
-            this.$refs.link.style.background="#12cc7c"
+        },
+        mark(button = 'no'){
+            this.$refs.mouse.classList.remove("mark")
+            this.$refs.link.classList.remove("mark")
+            this.$refs.replay.classList.remove("mark")
+            this.$refs.run.classList.remove("mark")
+            if (button=="link") this.$refs.link.classList.add("mark")
+            else if (button=='select') this.$refs.mouse.classList.add("mark")
+            else if (button=='run') this.$refs.run.classList.add("mark")
+            else if (button=='repeat') this.$refs.replay.classList.add("mark")
         },
         select(){
             this.noArrows()
+            this.mark('select')
             for (var i=0;i<this.machines.length;i++) this.machines[i].draggable(true)
             for (var i=0;i<this.queues.length;i++) {
                 console.log(toRaw(this.queues[i]))
@@ -109,8 +127,8 @@ export default {
         },
         Link(e){
             this.noArrows()
-            this.$refs.link.style.background="yellow"
-            this.$refs.mouse.style.background="#12cc7c"
+            this.zeroQueues()
+            this.mark('link')
             for (var i=0;i<this.machines.length;i++) this.machines[i].draggable(false)
             for (var i=0;i<this.queues.length;i++) this.queues[i].draggable(false)
             this.link = true
@@ -187,6 +205,7 @@ export default {
         },
         Clear(){
             this.noArrows()
+            this.mark('select')
             this.isDrawing = false,
             this.arrow = null,
             this.arrowSource = [],
@@ -204,41 +223,36 @@ export default {
             const response = axios.post(this.url+'clear')
         },
         async run(type){
-            this.$refs.link.style.background="#12cc7c"
-            this.$refs.mouse.style.background="#12cc7c"
             if (type=='run'){
                 let productsNumber = this.$refs.products.value
                 if (productsNumber<1) alert("Number of Products Must be between 1 and 100")
                 else if (productsNumber>100) ("Number of Products Must be between 1 and 100")
                 else {
-                    // this.$refs.run.style.background="yellow"
+                    this.mark('run')
                     const request = await axios.post(this.url+'addProducts?number='+productsNumber)
                     const response = await axios.post(this.url+'run')
                     this.finished = false
                     setInterval(() => {
                         if (!this.finished) {
                             this.Perform()
-                            // this.$refs.run.style.background="yellow"
                         }
-                        // else this.$refs.run.style.background="#12cc7c"
+                        else this.mark()
                     },500)
                 }
-                // this.$refs.run.style.background="#12cc7c"
+                this.$refs.run.disabled = true
             }
             else{
-                // this.$refs.replay.style.background="yellow"
+                this.mark('repeat')
                 const response = await axios.get(this.url+'replay')
                 if (response.data){
                     this.finished = false
                     setInterval(() => {
                         if (!this.finished) {
                             this.Perform()
-                            // this.$refs.replay.style.background="yellow"
                         }
-                        // else this.$refs.replay.style.background="#12cc7c"
+                        else this.mark()
                     },500)
                 }
-                // this.$refs.replay.style.background="#12cc7c"
             }
         },
         async Perform(){
@@ -266,8 +280,8 @@ export default {
     mounted() {
         this.stage = new Konva.Stage({
             container: this.$refs.container,
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: window.innerWidth*97/100,
+            height: window.innerHeight*86/100,
             id :0,
             name: 'container'
         });
@@ -301,20 +315,20 @@ export default {
 <style scoped>
     #container{
         background-color: white;
-        filter: blur(0px);
+        /* filter: blur(0px); */
         box-shadow: 0.5px 0.5px 5px 3px rgb(135, 135, 135) ;
         width: 98%;
-        height: 80%;
+        height: 85%;
         margin: 0px 1%;
     }
     #bar{
-        width: 98%;
-        margin: 0px 1%;
+        width: 97%;
+        margin: 0px 1.5%;
         margin-bottom: 7px;
         margin-top: 5px;
         padding: 3px 0px;
     }
-    .button{
+    .button,.mark{
         margin: 3px;
         background-color: #12cc7c;
         border: 0.5px rgb(99, 99, 99) solid;
@@ -326,8 +340,14 @@ export default {
         font-size: 16px;
         border-radius: 5px;
     }
+    .mark{
+        background-color: yellow
+    }
     .button:hover{
         background-color:#80e6ba;
+    }
+    .mark:hover{
+        background-color:yellow;
     }
     .tools{
         display:inline-flex;
